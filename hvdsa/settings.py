@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'canvas_planner',
+    'leaflet',
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,12 @@ DATABASES = {
     }
 }
 
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (42.24, -83.61),
+    'DEFAULT_ZOOM': 12,
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 18,
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
