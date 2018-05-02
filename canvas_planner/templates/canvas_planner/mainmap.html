@@ -1,30 +1,31 @@
 <style>
-
     .leaflet-container {  /* all maps */
-        width:  1600px;
-        height: 800px;
+        width:  100%;
+        height: 100%
     }
-
 </style>
 {% load leaflet_tags %}
 <html>
   <head>
     {% leaflet_js %}
     {% leaflet_css %}
+    <script type="text/javascript">
+	var dataurl = '{% url "data" %}';
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map;
+        // Download GeoJSON data with Ajax
+        fetch(dataurl)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, {}).addTo(map);
+          });
+      });
+    </script>
   </head>
   <body>
     <h1>HVDSA Census Tracts</h1>
-    {% leaflet_map "main" callback="main_map_init" %}
-
-    <script type="text/javascript">
-        function main_map_init (map, options) {
-            var dataurl = '{% url "data" %}';
-            // Download GeoJSON via Ajax
-            $.getJSON(dataurl, function (data) {
-                // Add GeoJSON layer
-                L.geoJson(data).addTo(map);
-            });
-        }
-    </script>
+    {% leaflet_map "main" %}
   </body>
 </html>

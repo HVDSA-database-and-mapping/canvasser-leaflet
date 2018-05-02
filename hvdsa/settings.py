@@ -86,9 +86,11 @@ DATABASES = {
 
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (42.24, -83.61),
-    'DEFAULT_ZOOM': 12,
-    'MIN_ZOOM': 3,
+    'DEFAULT_ZOOM': 15,
+    'MIN_ZOOM': 9,
     'MAX_ZOOM': 18,
+    'MINIMAP': True,
+    'RESET_VIEW': False,
 }
 
 # Password validation
