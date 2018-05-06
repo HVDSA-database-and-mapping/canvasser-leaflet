@@ -6,7 +6,30 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.contrib.gis.db import models
+from django.contrib.auth.models import User
 
+class Canvasser(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone_number = models.CharField(max_length=15)
+    email = models.EmailField()
+
+class Canvas(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=140)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    description = models.TextField()
+    canvassers = models.ManyToManyField(Canvasser)
+
+class CanvasArea(models.Model):
+    canvas = models.ForeignKey(Canvas, on_delete=models.CASCADE)
+    geom = models.PolygonField(srid=4326)
+
+class CanvasSector(models.Model):
+    canvas_area = models.ForeignKey(CanvasArea, on_delete=models.CASCADE)
+    canvassers = models.ManyToManyField(Canvasser)
+    geom = models.PolygonField(srid=4326)
 
 class CensusTract(models.Model):
     gid = models.AutoField(primary_key=True)
