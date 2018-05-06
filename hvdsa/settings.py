@@ -89,7 +89,7 @@ LEAFLET_CONFIG = {
     'DEFAULT_ZOOM': 15,
     'MIN_ZOOM': 9,
     'MAX_ZOOM': 18,
-    'MINIMAP': True,
+    'MINIMAP': False,
     'RESET_VIEW': False,
 }
 
