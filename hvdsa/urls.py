@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('canvasser/', include('canvas_planner.urls')),
+    path('canvasser/', include('canvasser.urls')),
 ]

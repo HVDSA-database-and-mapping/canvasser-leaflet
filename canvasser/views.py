@@ -3,7 +3,7 @@ from django.shortcuts import render
 from djgeojson.views import GeoJSONLayerView, TiledGeoJSONLayerView
 
 def index(request):
-    return render(request, 'canvas_planner/mainmap.html', {})
+    return render(request, 'canvasser/mainmap.html', {})
 
 class UntrimmedTiledGeoJSONLayerView(TiledGeoJSONLayerView):
     def __init__(self, *args, **kwargs):
