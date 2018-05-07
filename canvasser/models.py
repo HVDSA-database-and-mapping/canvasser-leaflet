@@ -14,6 +14,9 @@ class Canvasser(models.Model):
     phone_number = models.CharField(max_length=15)
     email = models.EmailField()
 
+    def __str__(self):
+        return '%s, %s' % (self.last_name, self.first_name)
+
 class Canvas(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=140)
@@ -22,14 +25,24 @@ class Canvas(models.Model):
     description = models.TextField()
     canvassers = models.ManyToManyField(Canvasser)
 
+    def __str__(self):
+        return '%s' % self.name
+
 class CanvasArea(models.Model):
     canvas = models.ForeignKey(Canvas, on_delete=models.CASCADE)
     geom = models.PolygonField(srid=4326)
+
+    def __str__(self):
+        return '%s Area' % self.canvas.name
 
 class CanvasSector(models.Model):
     canvas_area = models.ForeignKey(CanvasArea, on_delete=models.CASCADE)
     canvassers = models.ManyToManyField(Canvasser)
     geom = models.PolygonField(srid=4326)
+    order = models.IntegerField()
+
+    def __str__(self):
+        return '%s Sector %s' % (self.canvas_area.canvas.name, self.order)
 
 class CensusTract(models.Model):
     gid = models.AutoField(primary_key=True)
@@ -51,6 +64,9 @@ class CensusTract(models.Model):
         managed = False
         db_table = 'census_tract'
 
+    def __str__(self):
+        return '%s' % self.name
+
 
 class CongressionalDistrict(models.Model):
     gid = models.AutoField(primary_key=True)
@@ -67,6 +83,9 @@ class CongressionalDistrict(models.Model):
     class Meta:
         managed = False
         db_table = 'congressional_district'
+
+    def __str__(self):
+        return 'District %s' % self.cd115fp
 
 
 class County(models.Model):
@@ -85,6 +104,9 @@ class County(models.Model):
     class Meta:
         managed = False
         db_table = 'county'
+
+    def __str__(self):
+        return '%s County' % self.name
 
 
 class Parcel(models.Model):
@@ -150,3 +172,6 @@ class Parcel(models.Model):
     class Meta:
         managed = False
         db_table = 'parcel'
+
+    def __str__(self):
+        return '%s' % self.pin
