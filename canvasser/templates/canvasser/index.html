@@ -5,6 +5,14 @@
 
   <p>Welcome to <em>HVDSA Canvasser</em>, a GeoDjango + Leaflet.js webapp for planning canvassing events.</p>
 
+<form action="" method="post">
+  {% csrf_token %}
+  <table>
+    {{ form }}
+  </table>
+  <input type="submit" value="Submit" />
+</form>
+
 <h2>Dynamic content</h2>
 
   <p>Some usage statistics:</p>
