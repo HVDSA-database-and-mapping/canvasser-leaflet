@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib.gis import admin
 from django.urls import path, include
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('canvasser/', include('canvasser.urls')),
+    path('', RedirectView.as_view(url='canvasser/', permanent=False), name='index')
 ]

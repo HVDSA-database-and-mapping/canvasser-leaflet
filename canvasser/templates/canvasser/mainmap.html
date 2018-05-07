@@ -11,7 +11,7 @@
   {% leaflet_js plugins="forms" %}
   {% leaflet_css plugins="forms" %}
   <script type="text/javascript">
-    var dataurl = 'http://surtr.zapto.org:8000/canvasser/data/{z}/{x}/{y}.geojson';
+    var dataurl = 'data/{z}/{x}/{y}.geojson';
     window.addEventListener("map:init", function (event) {
       var map = event.detail.map;
       var drawnItems = new L.FeatureGroup();
@@ -95,7 +95,7 @@
   </script>
 </head>
 <body>
-  <h1>HVDSA Census Tracts</h1>
+  <h1>HVDSA Canvasser Demo</h1>
   {% leaflet_map "main" %}
 </body>
 </html>
