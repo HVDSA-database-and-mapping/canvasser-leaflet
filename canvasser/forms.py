@@ -1,7 +1,7 @@
-from django import forms
+from django.forms import ModelForm
 
 
-class NewCanvasForm(forms.Form):
-    new_canvas_name = forms.CharField(label='new_canvas_form',
-        max_length=140, help_text='140 characters max')
-
+class NewCanvasForm(ModelForm):
+    class Meta:
+        model = Canvas
+        fields = ['name', 'start_date', 'end_date']
