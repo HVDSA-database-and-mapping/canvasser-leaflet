@@ -3,6 +3,22 @@
   <head>
    {% leaflet_js plugins="forms" %}
    {% leaflet_css plugins="forms" %}
+   <script type="text/javascript">
+    window.addEventListener("map:init", function (event) {
+      var map = event.detail.map;
+      var style = {
+        "stroke": true,
+        "weight": 2,
+        "color": "#666666",
+        "fillColor": "#ffcccc",
+        "opacity": 1.0,
+        "fillOpacity": 1.0,
+      };
+      var polygon = L.polygon({% canvas_area.geom %}, style).addTo(map);
+      // zoom the map to the polygon
+      map.fitBounds(polygon.getBounds());
+    });
+  </script>
   </head>
   <body>
     <h1>Edit {{ object }}</h1>
