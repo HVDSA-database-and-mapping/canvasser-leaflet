@@ -7,7 +7,7 @@ from djgeojson.views import TiledGeoJSONLayerView
 
 import datetime
 
-from .forms import NewCanvasForm
+from .forms import NewCanvasForm, CanvasAreaForm, CanvasSectorForm
 
 
 class UntrimmedTiledGeoJSONLayerView(TiledGeoJSONLayerView):
@@ -33,8 +33,7 @@ def index(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # (here we just write it to the model due_back field)
-            canvas_inst = Canvas(name=form.cleaned_data['new_canvas_name'])
-            canvas_inst.save()
+            canvas_inst = form.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse('canvases'))
@@ -45,3 +44,29 @@ def index(request):
 
     return render(request, 'canvasser/index.html',
         {'form': form})
+
+
+def canvas_area_define(request, canvas_id):
+    if request.method == 'POST':
+        form = CanvasAreaForm(request.POST)
+        if form.is_valid():
+            canvas_area = form.save(commit=False)
+            canvas_area.canvas_id = canvas_id
+            canvas_area.save()
+            return HttpResponseRedirect(reverse('canvases'))
+    else:
+        form = CanvasAreaForm()
+    return render(request, 'canvasser/canvas_area.html', {'form': form})
+
+def canvas_sector_define(request, canvas_id):
+    if request.method == 'POST':
+        form = CanvasSectorForm(request.POST)
+        if form.is_valid():
+            canvas_sector = form.save(commit=False)
+            canvas_sector.canvas_id = canvas_id
+            canvas_sector.order = 0
+            canvas_sector.save()
+            return HttpResponseRedirect(reverse('canvases'))
+    else:
+        form = CanvasSectorForm()
+    return render(request, 'canvasser/canvas_sector.html', {'form': form})
