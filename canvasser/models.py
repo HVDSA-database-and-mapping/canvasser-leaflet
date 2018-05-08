@@ -34,13 +34,13 @@ class CanvasArea(models.Model):
 
 
 class CanvasSector(models.Model):
-    canvas_area = models.ForeignKey(CanvasArea, on_delete=models.CASCADE)
+    canvas = models.ForeignKey(Canvas, on_delete=models.CASCADE)
     canvassers = models.ManyToManyField(Canvasser)
     geom = models.PolygonField(srid=4326)
     order = models.IntegerField()
 
     def __str__(self):
-        return '%s Sector %s' % (self.canvas_area.canvas.name, self.order)
+        return '%s Sector %s' % (self.canvas.name, self.order)
 
 
 class CensusTract(models.Model):
