@@ -19,6 +19,6 @@ class CanvasAreaForm(ModelForm):
 class CanvasSectorForm(ModelForm):
     class Meta:
         model = CanvasSector
-        fields = ('geom',)
+        fields = ('geom', 'canvassers')
         widgets = {'geom': LeafletWidget()}
 

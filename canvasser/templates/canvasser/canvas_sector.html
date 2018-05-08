@@ -11,12 +11,15 @@
         "weight": 2,
         "color": "#666666",
         "fillColor": "#ffcccc",
-        "opacity": 1.0,
-        "fillOpacity": 1.0,
+        "opacity": 0.8,
+        "fillOpacity": 0.2,
       };
-      var polygon = L.polygon({% canvas_area.geom %}, style).addTo(map);
+      var polygon = L.geoJSON({% autoescape off %}{{ canvas_area.geom.json }}{% endautoescape %}, style).addTo(map);
       // zoom the map to the polygon
       map.fitBounds(polygon.getBounds());
+      {% for parcel in parcels %}
+      var parcel = L.geoJSON({% autoescape off %}{{ parcel.geom.json }}{% endautoescape %}, style).addTo(map);
+      {% endfor %}
     });
   </script>
   </head>
