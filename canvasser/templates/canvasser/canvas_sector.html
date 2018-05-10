@@ -20,11 +20,15 @@
         "opacity": 0.8,
         "fillOpacity": 0.2,
       };
+      var sector_style = {};
       var polygon = L.geoJSON({% autoescape off %}{{ canvas_area.geom.json }}{% endautoescape %}, style).addTo(map);
       // zoom the map to the polygon
       map.fitBounds(polygon.getBounds());
       {% for parcel in parcels %}
       var parcel = L.geoJSON({% autoescape off %}{{ parcel.geom.json }}{% endautoescape %}, style).addTo(map);
+      {% endfor %}
+      {% for sector in sectors %}
+      var sector = L.geoJSON({% autoescape off %}{{ sector.geom.json }}{% endautoescape %}, sector_style).addTo(map);
       {% endfor %}
     });
   </script>
