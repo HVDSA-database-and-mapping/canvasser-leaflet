@@ -20,7 +20,10 @@
         "opacity": 0.8,
         "fillOpacity": 0.2,
       };
-      var sector_style = {};
+      var sector_style = {
+        "fillColor": "#ff9966",
+        "color": "#ff9966"
+      };
       var polygon = L.geoJSON({% autoescape off %}{{ canvas_area.geom.json }}{% endautoescape %}, style).addTo(map);
       // zoom the map to the polygon
       map.fitBounds(polygon.getBounds());

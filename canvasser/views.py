@@ -48,6 +48,7 @@ def index(request):
 
 
 def canvas_area_define(request, canvas_id):
+    this_canvas = get_object_or_404(Canvas, id=canvas_id)
     if request.method == 'POST':
         form = CanvasAreaForm(request.POST)
         if form.is_valid():
@@ -60,7 +61,7 @@ def canvas_area_define(request, canvas_id):
     return render(request, 'canvasser/canvas_area.html', {'form': form})
 
 def canvas_sector_define(request, canvas_id):
-    this_canvas_area = CanvasArea.objects.get(canvas_id=canvas_id)
+    this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
     these_parcels = Parcel.objects.filter(geom__intersects=this_canvas_area.geom)
     these_sectors = CanvasSector.objects.filter(canvas_id=canvas_id)
     if request.method == 'POST':
