@@ -46,6 +46,8 @@ def index(request):
     return render(request, 'canvasser/index.html',
         {'form': form})
 
+def canvas_details(request, canvas_id):
+    return render(request, 'canvasser/index.html', {})
 
 def canvas_area_define(request, canvas_id):
     this_canvas = get_object_or_404(Canvas, id=canvas_id)
@@ -77,5 +79,6 @@ def canvas_sector_define(request, canvas_id):
     return render(request, 'canvasser/canvas_sector.html', 
             {'form': form, 
             'canvas_area': this_canvas_area, 
+            'canvas_id': canvas_id,
             'parcels': these_parcels,
             'sectors': these_sectors})
