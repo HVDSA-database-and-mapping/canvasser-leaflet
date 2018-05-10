@@ -11,7 +11,6 @@
    {% leaflet_css plugins="forms" %}
   </head>
   <body>
-    <h1>Edit {{ object }}</h1>
     <form action="" method="POST">
         {% csrf_token %}
         {{ form }}
