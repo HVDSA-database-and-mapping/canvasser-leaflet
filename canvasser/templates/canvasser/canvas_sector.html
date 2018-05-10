@@ -33,6 +33,15 @@ label[for="id_geom"] { display:none; }
       {% endfor %}
       {% for sector in sectors %}
       var sector = L.geoJSON({% autoescape off %}{{ sector.geom.json }}{% endautoescape %}, sector_style).addTo(map);
+        var canvasser_names = [];
+        {% for canvasser in sector.canvassers.all %}
+        canvasser_names.push('{{ canvasser.first_name }} {{ canvasser.last_name }}');
+        {% endfor %}
+        var canvasser_names_str = canvasser_names.join(', ');
+        sector.bindTooltip(canvasser_names_str,
+                 {permanent: true, direction:"center"}
+                   ).openTooltip()
+
       {% endfor %}
     });
   </script>
@@ -44,5 +53,6 @@ label[for="id_geom"] { display:none; }
         <input type="submit" value="Submit"/>
     </form>
     <a class='btn' href="{% url 'canvas-details' canvas_id=canvas_id %}">Complete</a>
+    <a class='btn' href="{% url 'index' %}">Home</a>
   </body>
 </html>

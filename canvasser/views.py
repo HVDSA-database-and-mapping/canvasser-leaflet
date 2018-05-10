@@ -73,6 +73,7 @@ def canvas_sector_define(request, canvas_id):
             canvas_sector.canvas_id = canvas_id
             canvas_sector.order = 0
             canvas_sector.save()
+            form.save_m2m()
             return HttpResponseRedirect('/canvasser/canvas-sectors/%d/' % canvas_id)
     else:
         form = CanvasSectorForm()
