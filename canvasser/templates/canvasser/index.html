@@ -1,15 +1,20 @@
 {% extends "canvasser/base.html" %}
 
 {% block content %}
-<h1>HVDSA Canvasser</h1>
 
-  <p>Welcome to <em>HVDSA Canvasser</em>, a GeoDjango + Leaflet.js webapp for planning canvassing events.</p>
+<div class='jumbotron'>
+    <div class='container text-center'>
+	<h2>HVDSA Canvasser</h2>
 
-<form action="" method="post">
-  {% csrf_token %}
-  <table>
-    {{ form }}
-  </table>
-  <input type="submit" value="Submit" />
-</form>
+	<p>Welcome to <em>HVDSA Canvasser</em>, a GeoDjango + Leaflet.js webapp for planning canvassing events.</p>
+
+	<form action="" method="post">
+	    {% csrf_token %}
+	    <table>
+		{{ form }}
+	    </table>
+	    <input type="submit" value="Submit" />
+	</form>
+    </div>
+</div>
 {% endblock %}

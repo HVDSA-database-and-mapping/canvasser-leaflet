@@ -59,9 +59,9 @@ label[for="id_geom"] { display:none; }
         {{ form }}
         <input type="submit" value="Submit"/>
     </form>
-    <div class="overlay">
-    <a class='btn btn-primary' href="{% url 'canvas-details' canvas_id=canvas_id %}">Complete</a>
-    <a class='btn btn-primary' href="{% url 'index' %}">Home</a>
+    <div class="btn-group">
+        <a class='btn btn-default' href="{% url 'canvas-details' canvas_id=canvas_id %}"><span class="glyphicon glyphicon-floppy-save"></span></a>
+        <a class='btn btn-default' href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span></a>
     </div>
   </body>
 </html>
