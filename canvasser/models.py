@@ -24,6 +24,9 @@ class Canvas(models.Model):
     def __str__(self):
         return '%s' % self.name
 
+    def get_absolute_url(self):
+        return '/canvas-details/%d/' % self.id
+
 
 class CanvasArea(models.Model):
     canvas = models.ForeignKey(Canvas, on_delete=models.CASCADE)

@@ -6,8 +6,11 @@
         <h1 class='panel-title'>{{ canvas.name }}</h1>
     </div>
     <div class='panel-body'>
-
-        <p> Canvas Details Here </p>
+        <ul>
+        {% for parcel in parcels %}
+        <li>{{ parcel.prop_street_num }} {{parcel.prop_street}}</li>
+        {% endfor %}
+        </ul>
 
     </div>
 </div>

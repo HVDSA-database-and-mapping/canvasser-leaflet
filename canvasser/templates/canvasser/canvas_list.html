@@ -12,7 +12,7 @@
 
             {% for canvas in canvas_list %}
             <li>
-                <a href="{{ canvas.get_absolute_url }}">{{ canvas.name }}</a> ({{canvas.description}})
+                <a href="/canvasser{{ canvas.get_absolute_url }}">{{ canvas.name }}</a> ({{canvas.description}})
             </li>
             {% endfor %}
 

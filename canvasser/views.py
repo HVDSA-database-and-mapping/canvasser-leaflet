@@ -49,7 +49,10 @@ def index(request):
         {'form': form})
 
 def canvas_details(request, canvas_id):
-    return render(request, 'canvasser/index.html', {})
+    this_canvas = get_object_or_404(Canvas, id=canvas_id)
+    this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
+    these_parcels = Parcel.objects.filter(geom__intersects=this_canvas_area.geom).order_by('prop_street', 'prop_street_num')
+    return render(request, 'canvasser/canvas_details.html', {'canvas': this_canvas, 'parcels': these_parcels})
 
 def canvas_area_define(request, canvas_id):
     this_canvas = get_object_or_404(Canvas, id=canvas_id)
