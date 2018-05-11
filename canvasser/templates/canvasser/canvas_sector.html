@@ -8,6 +8,11 @@ label[for="id_geom"] { display:none; }
 {% load leaflet_tags %}
 <html>
   <head>
+   <title>HVDSA Canvasser Sector Layout</title>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
    {% leaflet_js plugins="forms" %}
    {% leaflet_css plugins="forms" %}
    <script type="text/javascript">
@@ -47,14 +52,16 @@ label[for="id_geom"] { display:none; }
   </script>
   </head>
   <body>
+<script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <form action="" method="POST">
         {% csrf_token %}
         {{ form }}
         <input type="submit" value="Submit"/>
     </form>
     <div class="overlay">
-    <a class='btn' href="{% url 'canvas-details' canvas_id=canvas_id %}">Complete</a>
-    <a class='btn' href="{% url 'index' %}">Home</a>
+    <a class='btn btn-primary' href="{% url 'canvas-details' canvas_id=canvas_id %}">Complete</a>
+    <a class='btn btn-primary' href="{% url 'index' %}">Home</a>
     </div>
   </body>
 </html>
