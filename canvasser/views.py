@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
-from .models import Canvas, Canvasser, CanvasArea, Parcel
+from .models import Canvas, Canvasser, CanvasArea, Parcel, CanvasSector
 from djgeojson.views import TiledGeoJSONLayerView
 from django.contrib.gis.db.models.functions import AsGeoJSON, Transform 
 
@@ -34,10 +34,12 @@ def index(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # (here we just write it to the model due_back field)
-            canvas_inst = form.save()
+            canvas_inst = form.save(commit=False)
+            canvas_inst.owner = request.user
+            canvas_inst.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect(reverse('canvases'))
+            return HttpResponseRedirect('/canvasser/canvas-area/%d/' % canvas_inst.id)
 
     # If this is a GET (or any other method) create the default form.
     else:
@@ -46,22 +48,26 @@ def index(request):
     return render(request, 'canvasser/index.html',
         {'form': form})
 
+def canvas_details(request, canvas_id):
+    return render(request, 'canvasser/index.html', {})
 
 def canvas_area_define(request, canvas_id):
+    this_canvas = get_object_or_404(Canvas, id=canvas_id)
     if request.method == 'POST':
         form = CanvasAreaForm(request.POST)
         if form.is_valid():
             canvas_area = form.save(commit=False)
             canvas_area.canvas_id = canvas_id
             canvas_area.save()
-            return HttpResponseRedirect(reverse('canvases'))
+            return HttpResponseRedirect('/canvasser/canvas-sectors/%d/' % canvas_id)
     else:
         form = CanvasAreaForm()
     return render(request, 'canvasser/canvas_area.html', {'form': form})
 
 def canvas_sector_define(request, canvas_id):
-    this_canvas_area = CanvasArea.objects.get(canvas_id=canvas_id)
-    these_parcels = Parcel.objects.filter(geom__bboverlaps=this_canvas_area.geom)
+    this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
+    these_parcels = Parcel.objects.filter(geom__intersects=this_canvas_area.geom)
+    these_sectors = CanvasSector.objects.filter(canvas_id=canvas_id)
     if request.method == 'POST':
         form = CanvasSectorForm(request.POST)
         if form.is_valid():
@@ -69,7 +75,13 @@ def canvas_sector_define(request, canvas_id):
             canvas_sector.canvas_id = canvas_id
             canvas_sector.order = 0
             canvas_sector.save()
-            return HttpResponseRedirect(reverse('canvases'))
+            form.save_m2m()
+            return HttpResponseRedirect('/canvasser/canvas-sectors/%d/' % canvas_id)
     else:
         form = CanvasSectorForm()
-    return render(request, 'canvasser/canvas_sector.html', {'form': form, 'canvas_area': this_canvas_area, 'parcels': these_parcels})
+    return render(request, 'canvasser/canvas_sector.html', 
+            {'form': form, 
+            'canvas_area': this_canvas_area, 
+            'canvas_id': canvas_id,
+            'parcels': these_parcels,
+            'sectors': these_sectors})

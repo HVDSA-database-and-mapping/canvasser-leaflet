@@ -3,6 +3,7 @@
   width:  100%;
   height: 100%
 }
+label[for="id_geom"] { display:none; }
 </style>
 {% load leaflet_tags %}
 <html>
@@ -11,7 +12,6 @@
    {% leaflet_css plugins="forms" %}
   </head>
   <body>
-    <h1>Edit {{ object }}</h1>
     <form action="" method="POST">
         {% csrf_token %}
         {{ form }}
