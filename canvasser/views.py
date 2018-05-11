@@ -34,7 +34,9 @@ def index(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # (here we just write it to the model due_back field)
-            canvas_inst = form.save()
+            canvas_inst = form.save(commit=False)
+            canvas_inst.owner = request.user
+            canvas_inst.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/canvasser/canvas-area/%d/' % canvas_inst.id)

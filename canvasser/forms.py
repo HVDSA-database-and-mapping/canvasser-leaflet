@@ -1,12 +1,20 @@
+from django import forms
 from django.forms import ModelForm
 from leaflet.forms.widgets import LeafletWidget
 from .models import Canvas, CanvasArea, CanvasSector
 
 
+class DateInput(forms.DateInput):
+    input_type='date'
+
 class NewCanvasForm(ModelForm):
     class Meta:
         model = Canvas
-        fields = '__all__'
+        fields = ['name', 'start_date', 'end_date', 'description']
+        widgets = {
+            'start_date': DateInput(),
+            'end_date': DateInput()
+        }
 
 
 class CanvasAreaForm(ModelForm):
