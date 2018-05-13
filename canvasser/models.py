@@ -22,7 +22,7 @@ class Canvas(models.Model):
     name = models.CharField(max_length=140)
     start_date = models.DateField(default=date.today)
     end_date = models.DateField(default=date.today)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     canvassers = models.ManyToManyField(Canvasser)
 
     def __str__(self):
