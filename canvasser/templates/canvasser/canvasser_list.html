@@ -1,0 +1,26 @@
+{% extends "canvasser/base.html" %}
+
+{% block content %}
+<div class='panel panel-primary'>
+    <div class='panel-heading'>
+        <h1 class='panel-title'>Canvasser List</h1>
+    </div>
+    <div class='panel-body'>
+
+        {% if canvasser_list %}
+        <ul>
+
+            {% for canvasser in canvasser_list %}
+            <li>
+                <a href="/canvasser{{ canvasser.get_absolute_url }}">{{ canvasser.last_name }}, {{ canvasser.first_name }}</a>
+            </li>
+            {% endfor %}
+
+        </ul>
+        {% else %}
+        <p>No canvassers have been created.</p>
+        {% endif %}       
+    </div>
+</div>
+{% endblock %}
+

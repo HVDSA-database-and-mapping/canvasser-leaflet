@@ -12,6 +12,9 @@ class Canvasser(models.Model):
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)
 
+    def get_absolute_url(self):
+        return '/canvasser-details/%d/' % self.id
+
 
 class Canvas(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
