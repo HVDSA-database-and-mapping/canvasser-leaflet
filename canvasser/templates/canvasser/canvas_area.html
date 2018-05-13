@@ -1,9 +1,31 @@
 <style>
 .leaflet-container {  /* all maps */
   width:  100%;
-  height: 100%
+  height: 100%;
+  z-index: 1;
 }
 label[for="id_geom"] { display:none; }
+#submit_area {
+  position: absolute;
+  top: 12;
+  right: 12;
+  z-index: 10;
+  width: 200;
+  height: 40;
+  background-color: #36e24a;
+  font-size: 16;
+  border-radius: 12px;
+}
+#button-outline {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  width: 220;
+  height: 60;
+  border-radius: 0px 0px 0px 20px;
+  background-color: #FFFFFF;
+}
 </style>
 {% load leaflet_tags %}
 <html>
@@ -15,7 +37,9 @@ label[for="id_geom"] { display:none; }
     <form action="" method="POST">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Submit"/>
+        <div id='button-outline'>
+        </div>
+        <input type="submit" value="Complete" id='submit_area'/>
     </form>
   </body>
 </html>

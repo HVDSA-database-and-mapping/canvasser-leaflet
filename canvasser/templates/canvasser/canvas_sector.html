@@ -1,9 +1,40 @@
 <style>
 .leaflet-container {  /* all maps */
   width:  100%;
-  height: calc(100% - 100px);
+  height: 100%;
+  z-index: 1;
 }
 label[for="id_geom"] { display:none; }
+#submit-sectors {
+  position: absolute;
+  top: 122;
+  right: 12;
+  z-index: 10;
+  width: 200;
+  height: 40;
+  background-color: #36e24a;
+  font-size: 16;
+  border-radius: 12px;
+}
+#button-outline {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  width: 220;
+  height: 170;
+  border-radius: 0px 0px 0px 20px;
+  background-color: #FFFFFF;
+}
+#id_canvassers {
+  position: absolute;
+  top: 12;
+  right: 12;
+  width: 200;
+  height: 100;
+  z-index: 10;
+  border-radius: 12px;
+}
 </style>
 {% load leaflet_tags %}
 <html>
@@ -57,7 +88,8 @@ label[for="id_geom"] { display:none; }
     <form action="" method="POST">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Submit"/>
+        <div id='button-outline'></div>
+        <input id='submit-sectors' type="submit" value="Assign Sector"/>
     </form>
     <div class="btn-group">
         <a class='btn btn-default' href="{% url 'canvas-details' canvas_id=canvas_id %}"><span class="glyphicon glyphicon-floppy-save"></span></a>
