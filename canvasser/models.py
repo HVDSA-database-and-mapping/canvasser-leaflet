@@ -1,6 +1,7 @@
 
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
+from datetime import date
 
 
 class Canvasser(models.Model):
@@ -19,8 +20,8 @@ class Canvasser(models.Model):
 class Canvas(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=140)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(default=date.today)
+    end_date = models.DateField(default=date.today)
     description = models.TextField()
     canvassers = models.ManyToManyField(Canvasser)
 
