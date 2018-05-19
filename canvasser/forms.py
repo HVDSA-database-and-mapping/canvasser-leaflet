@@ -29,9 +29,9 @@ class CanvasAreaForm(ModelForm):
         widgets = {'geom': LeafletWidget()}
 
 
-class CanvasSectorForm(ModelForm):
+class TurfForm(ModelForm):
     class Meta:
-        model = CanvasSector
+        model = Turf
         fields = ('geom', 'canvassers')
         widgets = {'geom': LeafletWidget()}
 

@@ -47,21 +47,20 @@ class Canvas(models.Model):
 
 
 class CanvasArea(models.Model):
-    canvas = models.ForeignKey(Canvas, on_delete=models.CASCADE)
+    canvas = models.OneToOneField(Canvas, on_delete=models.CASCADE, primary_key=True)
     geom = models.PolygonField(srid=4326)
 
     def __str__(self):
         return '%s Area' % self.canvas.name
 
 
-class CanvasSector(models.Model):
+class Turf(models.Model):
     canvas = models.ForeignKey(Canvas, on_delete=models.CASCADE)
     canvassers = models.ManyToManyField(Canvasser)
     geom = models.PolygonField(srid=4326)
-    order = models.IntegerField()
 
     def __str__(self):
-        return '%s Sector %s' % (self.canvas.name, self.order)
+        return '%s Turf' % self.canvas.name
 
 
 class CensusTract(models.Model):

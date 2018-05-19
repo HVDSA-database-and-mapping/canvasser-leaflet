@@ -39,7 +39,7 @@ label[for="id_geom"] { display:none; }
 {% load leaflet_tags %}
 <html>
   <head>
-   <title>HVDSA Canvasser Sector Layout</title>
+   <title>HVDSA Canvasser Turf Layout</title>
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -57,7 +57,7 @@ label[for="id_geom"] { display:none; }
         "opacity": 0.8,
         "fillOpacity": 0.2,
       };
-      var sector_style = {
+      var turf_style = {
         "fillColor": "#ff9966",
         "color": "#ff9966"
       };
@@ -67,10 +67,10 @@ label[for="id_geom"] { display:none; }
       {% for parcel in parcels %}
       var parcel = L.geoJSON({% autoescape off %}{{ parcel.geom.json }}{% endautoescape %}, style).addTo(map);
       {% endfor %}
-      {% for sector in sectors %}
-      var sector = L.geoJSON({% autoescape off %}{{ sector.geom.json }}{% endautoescape %}, sector_style).addTo(map);
+      {% for turf in turfs %}
+      var sector = L.geoJSON({% autoescape off %}{{ turf.geom.json }}{% endautoescape %}, turf_style).addTo(map);
         var canvasser_names = [];
-        {% for canvasser in sector.canvassers.all %}
+        {% for canvasser in turf.canvassers.all %}
         canvasser_names.push('{{ canvasser.first_name }} {{ canvasser.last_name }}');
         {% endfor %}
         var canvasser_names_str = canvasser_names.join(', ');
@@ -89,7 +89,7 @@ label[for="id_geom"] { display:none; }
         {% csrf_token %}
         {{ form }}
         <div id='button-outline'></div>
-        <input id='submit-sectors' type="submit" value="Assign Sector"/>
+        <input id='submit-sectors' type="submit" value="Assign Turf"/>
     </form>
     <div class="btn-group">
         <a class='btn btn-default' href="{% url 'canvas-details' canvas_id=canvas_id %}"><span class="glyphicon glyphicon-floppy-save"></span></a>

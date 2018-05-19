@@ -98,29 +98,28 @@ def canvas_area_define(request, canvas_id):
             canvas_area = form.save(commit=False)
             canvas_area.canvas_id = canvas_id
             canvas_area.save()
-            return HttpResponseRedirect('/canvasser/canvas-sectors/%d/' % canvas_id)
+            return HttpResponseRedirect('/canvasser/turf/%d/' % canvas_id)
     else:
         form = CanvasAreaForm()
     return render(request, 'canvasser/canvas_area.html', {'form': form})
 
-def canvas_sector_define(request, canvas_id):
+def turf_define(request, canvas_id):
     this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
     these_parcels = Parcel.objects.filter(geom__intersects=this_canvas_area.geom)
-    these_sectors = CanvasSector.objects.filter(canvas_id=canvas_id)
+    these_turfs = Turf.objects.filter(canvas_id=canvas_id)
     if request.method == 'POST':
-        form = CanvasSectorForm(request.POST)
+        form = TurfForm(request.POST)
         if form.is_valid():
-            canvas_sector = form.save(commit=False)
-            canvas_sector.canvas_id = canvas_id
-            canvas_sector.order = 0
-            canvas_sector.save()
+            turf = form.save(commit=False)
+            turf.canvas_id = canvas_id
+            turf.save()
             form.save_m2m()
-            return HttpResponseRedirect('/canvasser/canvas-sectors/%d/' % canvas_id)
+            return HttpResponseRedirect('/canvasser/turf/%d/' % canvas_id)
     else:
-        form = CanvasSectorForm()
-    return render(request, 'canvasser/canvas_sector.html', 
+        form = TurfForm()
+    return render(request, 'canvasser/turf.html', 
             {'form': form, 
             'canvas_area': this_canvas_area, 
             'canvas_id': canvas_id,
             'parcels': these_parcels,
-            'sectors': these_sectors})
+            'turfs': these_turfs})
