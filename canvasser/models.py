@@ -1,4 +1,4 @@
-
+from django.contrib.postgres.fields import JSONField
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 from datetime import date
@@ -214,3 +214,22 @@ class Parcel(models.Model):
 
     def __str__(self):
         return '%s' % self.pin
+
+class Unit(models.Model):
+    parcel = models.ForeignKey(Parcel, on_delete=models.PROTECT, blank=True)
+    name = models.CharField(max_length=140, blank=True, null=True)
+
+    def __str__(self):
+        return '%s Unit %s' % (self.parcel.pin, self.name)
+
+class Interaction(models.Model):
+    unit = models.ForeignKey(Unit, on_delete=models.PROTECT, blank=True)
+    canvas = models.ForeignKey(Canvas, on_delete=models.PROTECT, blank=True)
+    canvassers = models.ManyToManyField(Canvasser, blank=True)
+    at_home = models.BooleanField()
+    response = models.SmallIntegerField()
+    campaign_info = JSONField()
+
+    def __str__(self):
+        return 'Unit %s, Canvas %s' % (self.unit, self.canvas.name)
+
