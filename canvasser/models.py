@@ -4,6 +4,20 @@ from django.contrib.auth.models import User
 from datetime import date
 
 
+class Campaign(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    name = models.CharField(max_length=140)
+    start_date = models.DateField(default=date.today)
+    end_date = models.DateField(default=date.today)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return '%s' % self.name
+
+    def get_absolute_url(self):
+        return '/campaign-details/%d/' % self.id
+
+
 class Canvasser(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -18,10 +32,9 @@ class Canvasser(models.Model):
 
 
 class Canvas(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
     name = models.CharField(max_length=140)
-    start_date = models.DateField(default=date.today)
-    end_date = models.DateField(default=date.today)
+    date = models.DateField(default=date.today)
     description = models.TextField(blank=True)
     canvassers = models.ManyToManyField(Canvasser)
 

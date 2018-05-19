@@ -1,6 +1,5 @@
 from django.contrib.gis import admin
-from .models import CensusTract, CongressionalDistrict, County, Parcel, \
-    Canvas, Canvasser, CanvasArea, CanvasSector
+from .models import *
 
 admin.site.register(CensusTract, admin.OSMGeoAdmin)
 admin.site.register(CongressionalDistrict, admin.OSMGeoAdmin)
@@ -10,3 +9,4 @@ admin.site.register(Canvas)
 admin.site.register(Canvasser)
 admin.site.register(CanvasArea, admin.OSMGeoAdmin)
 admin.site.register(CanvasSector, admin.OSMGeoAdmin)
+admin.site.register(Campaign)

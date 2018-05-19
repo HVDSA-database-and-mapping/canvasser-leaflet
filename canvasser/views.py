@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
-from .models import Canvas, Canvasser, CanvasArea, Parcel, CanvasSector
+from .models import *
 from djgeojson.views import TiledGeoJSONLayerView
 from django.contrib.gis.db.models.functions import AsGeoJSON, Transform 
 
@@ -23,6 +23,10 @@ class CanvasListView(generic.ListView):
 
 class CanvasserListView(generic.ListView):
     model = Canvasser
+
+
+class CampaignListView(generic.ListView):
+    model = Campaign
 
 
 def index(request):
@@ -47,6 +51,10 @@ def index(request):
 
     return render(request, 'canvasser/index.html',
         {'form': form})
+
+def campaign_details(request, campaign_id):
+    this_campaign = get_object_or_404(Campaign, id=campaign_id)
+    return render(request, 'canvasser/campaign_details.html', {'campaign': this_campaign})
 
 def canvas_details(request, canvas_id):
     this_canvas = get_object_or_404(Canvas, id=canvas_id)

@@ -10,10 +10,9 @@ class DateInput(forms.DateInput):
 class NewCanvasForm(ModelForm):
     class Meta:
         model = Canvas
-        fields = ['name', 'start_date', 'end_date', 'description']
+        fields = ['name', 'date', 'description']
         widgets = {
-            'start_date': DateInput(),
-            'end_date': DateInput()
+            'date': DateInput()
         }
 
 
