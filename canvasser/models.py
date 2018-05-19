@@ -37,6 +37,7 @@ class Canvas(models.Model):
     date = models.DateField(default=date.today)
     description = models.TextField(blank=True)
     canvassers = models.ManyToManyField(Canvasser)
+    campaign = models.ForeignKey(Campaign, on_delete=models.PROTECT)
 
     def __str__(self):
         return '%s' % self.name

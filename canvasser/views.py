@@ -8,7 +8,7 @@ from django.contrib.gis.db.models.functions import AsGeoJSON, Transform
 
 import datetime
 
-from .forms import NewCanvasForm, CanvasAreaForm, CanvasSectorForm
+from .forms import *
 
 
 class UntrimmedTiledGeoJSONLayerView(TiledGeoJSONLayerView):
@@ -50,6 +50,29 @@ def index(request):
         form = NewCanvasForm()
 
     return render(request, 'canvasser/index.html',
+        {'form': form})
+
+def new_campaign(request):
+
+    if request.method == 'POST':
+        form = NewCampaignForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # (here we just write it to the model due_back field)
+            campaign_inst = form.save(commit=False)
+            campaign_inst.owner = request.user
+            campaign_inst.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/canvasser/campaigns/')
+
+    # If this is a GET (or any other method) create the default form.
+    else:
+        form = NewCampaignForm()
+
+    return render(request, 'canvasser/new_campaign.html',
         {'form': form})
 
 def campaign_details(request, campaign_id):
