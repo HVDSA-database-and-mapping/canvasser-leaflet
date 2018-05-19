@@ -22,7 +22,7 @@ label[for="id_geom"] { display:none; }
   right: 0;
   z-index: 5;
   width: 220;
-  height: 170;
+  height: 220;
   border-radius: 0px 0px 0px 20px;
   background-color: #FFFFFF;
 }
@@ -33,6 +33,17 @@ label[for="id_geom"] { display:none; }
   width: 200;
   height: 100;
   z-index: 10;
+  border-radius: 12px;
+}
+#complete_button {
+  position: absolute;
+  z-index: 10;
+  top: 172;
+  right: 12;
+  width: 200;
+  height: 40;
+  background-color: #36e24a;
+  font-size: 16;
   border-radius: 12px;
 }
 </style>
@@ -91,9 +102,6 @@ label[for="id_geom"] { display:none; }
         <div id='button-outline'></div>
         <input id='submit-sectors' type="submit" value="Assign Turf"/>
     </form>
-    <div class="btn-group">
-        <a class='btn btn-default' href="{% url 'canvas-details' canvas_id=canvas_id %}"><span class="glyphicon glyphicon-floppy-save"></span></a>
-        <a class='btn btn-default' href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span></a>
-    </div>
+    <a id='complete_button' class="btn btn-primary" href="{% url 'canvas-details' canvas_id=canvas_id %}">Finish Canvas</a>
   </body>
 </html>
