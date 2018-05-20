@@ -64,15 +64,21 @@ label[for="id_geom"] { display:none; }
         "stroke": true,
         "weight": 2,
         "color": "#666666",
-        "fillColor": "#ffcccc",
+        "fillColor": "#ff0000",
         "opacity": 0.8,
-        "fillOpacity": 0.2,
+        "fillOpacity": 0.8,
+      };
+      var area_style = {
+        "color": "#666666",
+        "fillColor": "#ff0000",
+        "opacity": 0.8,
+        "fillOpacity": 0.3
       };
       var turf_style = {
         "fillColor": "#ff9966",
         "color": "#ff9966"
       };
-      var polygon = L.geoJSON({% autoescape off %}{{ canvas_area.geom.json }}{% endautoescape %}, style).addTo(map);
+      var polygon = L.geoJSON({% autoescape off %}{{ canvas_area.geom.json }}{% endautoescape %}, area_style).addTo(map);
       // zoom the map to the polygon
       map.fitBounds(polygon.getBounds());
       {% for parcel in parcels %}

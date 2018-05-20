@@ -200,6 +200,7 @@ class Parcel(models.Model):
     unit_apt_num = models.CharField(max_length=20, blank=True, null=True)
     geometry = models.TextField(blank=True, null=True)
     geom = models.MultiPolygonField(srid=4326, blank=True, null=True)
+    centroid = models.PointField()
     lon_centroid = models.DecimalField(max_digits=65535,
         decimal_places=65535, blank=True, null=True)
     lat_centroid = models.DecimalField(max_digits=65535,

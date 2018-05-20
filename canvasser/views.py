@@ -85,7 +85,7 @@ def canvas_details(request, canvas_id):
     these_turfs = Turf.objects.filter(canvas_id=canvas_id)
     turf_info = {}
     for turf in these_turfs:
-        these_parcels = Parcel.objects.filter(geom__intersects=turf.geom).order_by('prop_street', 'prop_street_num')
+        these_parcels = Parcel.objects.filter(centroid__within=turf.geom).order_by('prop_street', 'prop_street_num')
         this_info = {'turf': turf, 'parcels': these_parcels}
         turf_info[turf.id] = this_info
     return render(request, 'canvasser/canvas_details.html', {'canvas': this_canvas, 'canvas_area': this_canvas_area, 'turf_info_dict': turf_info})
@@ -110,7 +110,7 @@ def canvas_area_define(request, canvas_id):
 
 def turf_define(request, canvas_id):
     this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
-    these_parcels = Parcel.objects.filter(geom__intersects=this_canvas_area.geom)
+    these_parcels = Parcel.objects.filter(centroid__within=this_canvas_area.geom)
     these_turfs = Turf.objects.filter(canvas_id=canvas_id)
     if request.method == 'POST':
         form = TurfForm(request.POST)
