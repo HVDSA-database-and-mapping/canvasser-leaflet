@@ -11,9 +11,9 @@ function map_init_canvas_area (map, options){
       "stroke": true,
       "weight": 2,
       "color": "#666666",
-      "fillColor": "#ffcccc",
+      "fillColor": "#ff0000",
       "opacity": 0.8,
-      "fillOpacity": 0.2,
+      "fillOpacity": 0.4,
     };
     var polygon = L.geoJSON({% autoescape off %}{{ canvas_area.geom.json }}{% endautoescape %}, style).addTo(map);
     map.fitBounds(polygon.getBounds());
@@ -90,7 +90,7 @@ function map_init_canvas_area (map, options){
     <script type="text/javascript">
 (function () {
   function loadmap() {
-    var djoptions = {"srid": null, "extent": [[-90, -180], [90, 180]], "fitextent": true, "center": [42.24, -83.61], "zoom": 15, "minzoom": 9, "maxzoom": 18, "layers": [["OSM", "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"]], "overlays": [], "attributionprefix": null, "scale": "metric", "minimap": false, "resetview": false, "tilesextent": []},
+    var djoptions = {"srid": null, "extent": [[-90, -180], [90, 180]], "fitextent": true, "center": [42.24, -83.61], "zoom": 15, "minzoom": 9, "maxzoom": 18, "layers": [["OSM", "http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga", "\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"]], "overlays": [], "attributionprefix": null, "scale": "metric", "minimap": false, "resetview": false, "tilesextent": []},
     options = {djoptions: djoptions, initfunc: loadmap,
     globals: false, callback: null},
     map = L.Map.djangoMap('turf-map-{{ turf_info.turf.id }}', options);
@@ -98,9 +98,9 @@ function map_init_canvas_area (map, options){
       "stroke": true,
       "weight": 2,
       "color": "#666666",
-      "fillColor": "#ffcccc",
+      "fillColor": "#ff0000",
       "opacity": 0.8,
-      "fillOpacity": 0.2,
+      "fillOpacity": 0.4,
     };
     var polygon = L.geoJSON({% autoescape off %}{{ turf_info.turf.geom.json }}{% endautoescape %}, style).addTo(map);
     map.fitBounds(polygon.getBounds());

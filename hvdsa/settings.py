@@ -91,6 +91,7 @@ LEAFLET_CONFIG = {
     'MAX_ZOOM': 18,
     'MINIMAP': False,
     'RESET_VIEW': False,
+    'TILES': 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga'
 }
 
 # Password validation
