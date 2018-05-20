@@ -1,17 +1,45 @@
 {% extends "canvasser/base.html" %}
 
+{% block title %}
+<title> Canvas Details </title>
+{% load leaflet_tags %}
+{% leaflet_js %}
+{% leaflet_css %}
+{% endblock %}
+    
+
 {% block content %}
 <div class='panel panel-primary'>
     <div class='panel-heading'>
         <h1 class='panel-title'>{{ canvas.name }}</h1>
     </div>
     <div class='panel-body'>
+        <p>{{ canvas.description }}</p>
+        <p>{{ canvas.date }}</p>
         <ul>
-        {% for parcel in parcels %}
-        <li>{{ parcel.prop_street_num }} {{parcel.prop_street}}</li>
+        {% for canvasser in canvas.canvassers.all %}
+        <li>{{ canvasser.first_name }} {{ canvasser.last_name }}</li>
         {% endfor %}
         </ul>
-
+        {% leaflet_map "area_map" %}
     </div>
 </div>
+{% for turf_id, turf_info in turf_info_dict.items %}
+<div class='panel panel-primary'>
+    <div class='panel-heading'>
+        <h1 class='panel-title'>
+            {% for canvasser in turf_info.turf.canvassers.all %}
+            {{ canvasser.first_name }} {{ canvasser.last_name }},
+            {% endfor %}
+        </h1>
+    </div>
+    <div class='panel-body'>
+        <ul>
+        {% for parcel in turf_info.parcels %}
+          <li>{{ parcel.prop_street_num }} {{parcel.prop_street}}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
