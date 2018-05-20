@@ -5,6 +5,27 @@
 {% load leaflet_tags %}
 {% leaflet_js %}
 {% leaflet_css %}
+<script type="text/javascript">
+function map_init_canvas_area (map, options){
+    var style = {
+      "stroke": true,
+      "weight": 2,
+      "color": "#666666",
+      "fillColor": "#ffcccc",
+      "opacity": 0.8,
+      "fillOpacity": 0.2,
+    };
+    var polygon = L.geoJSON({% autoescape off %}{{ canvas_area.geom.json }}{% endautoescape %}, style).addTo(map);
+    map.fitBounds(polygon.getBounds());
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+    if (map.tap) map.tap.disable();
+}
+</script>
 {% endblock %}
     
 
@@ -21,7 +42,7 @@
         <li>{{ canvasser.first_name }} {{ canvasser.last_name }}</li>
         {% endfor %}
         </ul>
-        {% leaflet_map "area_map" %}
+        {% leaflet_map "area_map" callback="window.map_init_canvas_area" %}
     </div>
 </div>
 {% for turf_id, turf_info in turf_info_dict.items %}
@@ -39,6 +60,38 @@
           <li>{{ parcel.prop_street_num }} {{parcel.prop_street}}</li>
         {% endfor %}
         </ul>
+        <div id="turf-map-{{ turf_info.turf.id }}" class="leaflet-container-default"></div>
+    <script type="text/javascript">
+(function () {
+  function loadmap() {
+    var djoptions = {"srid": null, "extent": [[-90, -180], [90, 180]], "fitextent": true, "center": [42.24, -83.61], "zoom": 15, "minzoom": 9, "maxzoom": 18, "layers": [["OSM", "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"]], "overlays": [], "attributionprefix": null, "scale": "metric", "minimap": false, "resetview": false, "tilesextent": []},
+    options = {djoptions: djoptions, initfunc: loadmap,
+    globals: false, callback: null},
+    map = L.Map.djangoMap('turf-map-{{ turf_info.turf.id }}', options);
+     var style = {
+      "stroke": true,
+      "weight": 2,
+      "color": "#666666",
+      "fillColor": "#ffcccc",
+      "opacity": 0.8,
+      "fillOpacity": 0.2,
+    };
+    var polygon = L.geoJSON({% autoescape off %}{{ turf_info.turf.geom.json }}{% endautoescape %}, style).addTo(map);
+    map.fitBounds(polygon.getBounds());
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+    if (map.tap) map.tap.disable();
+ }
+  var loadevents = ["load"];
+  if (loadevents.length === 0) loadmap();
+  else if (window.addEventListener) for (var i=0; i<loadevents.length; i++) window.addEventListener(loadevents[i], loadmap, false);
+  else if (window.jQuery) jQuery(window).on(loadevents.join(' '), loadmap);
+})();
+</script>
     </div>
 </div>
 {% endfor %}

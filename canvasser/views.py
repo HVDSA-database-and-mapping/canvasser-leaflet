@@ -88,7 +88,7 @@ def canvas_details(request, canvas_id):
         these_parcels = Parcel.objects.filter(geom__intersects=turf.geom).order_by('prop_street', 'prop_street_num')
         this_info = {'turf': turf, 'parcels': these_parcels}
         turf_info[turf.id] = this_info
-    return render(request, 'canvasser/canvas_details.html', {'canvas': this_canvas, 'turf_info_dict': turf_info})
+    return render(request, 'canvasser/canvas_details.html', {'canvas': this_canvas, 'canvas_area': this_canvas_area, 'turf_info_dict': turf_info})
 
 def canvasser_details(request, canvasser_id):
     this_canvasser = get_object_or_404(Canvasser, id=canvasser_id)
