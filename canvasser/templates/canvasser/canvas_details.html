@@ -26,6 +26,23 @@ function map_init_canvas_area (map, options){
     if (map.tap) map.tap.disable();
 }
 </script>
+<style>
+.leaflet-container-default {
+    max-width: 70%;
+    margin-left: 30%;
+}
+.detail-subpanel {
+    position: absolute;
+    left: 0px;
+    width: 30%;
+    max-height: 85%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.panel {
+    position: relative;
+}
+</style>
 {% endblock %}
     
 
@@ -38,6 +55,7 @@ function map_init_canvas_area (map, options){
         </h1>
     </div>
     <div id='collapse1' class='panel-collapse collapse in'>
+        <div class='detail-subpanel'>
         <p>{{ canvas.description }}</p>
         <p>{{ canvas.date }}</p>
         <ul>
@@ -45,6 +63,7 @@ function map_init_canvas_area (map, options){
         <li>{{ canvasser.first_name }} {{ canvasser.last_name }}</li>
         {% endfor %}
         </ul>
+        </div>
         {% leaflet_map "area_map" callback="window.map_init_canvas_area" %}
     </div>
 </div>
@@ -60,11 +79,13 @@ function map_init_canvas_area (map, options){
         </h1>
     </div>
     <div id='collapse{{turf_id}}' class='panel-collapse collapse in'>
+        <div class='detail-subpanel'>
         <ul>
         {% for parcel in turf_info.parcels %}
           <li>{{ parcel.prop_street_num }} {{parcel.prop_street}}</li>
         {% endfor %}
         </ul>
+        </div>
         <div id="turf-map-{{ turf_info.turf.id }}" class="leaflet-container-default"></div>
     <script type="text/javascript">
 (function () {
