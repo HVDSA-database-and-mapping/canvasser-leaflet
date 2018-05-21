@@ -5,13 +5,15 @@ from .models import *
 
 
 class DateInput(forms.DateInput):
-    input_type='date'
+    input_type = 'date'
+
 
 class NewCampaignForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['name', 'start_date', 'end_date', 'description']
-        widgets = { 'start_date': DateInput(), 'end_date': DateInput() }
+        widgets = {'start_date': DateInput(), 'end_date': DateInput()}
+
 
 class NewCanvasForm(ModelForm):
     class Meta:
