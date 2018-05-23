@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import generic
 from .models import *
@@ -7,6 +7,7 @@ from djgeojson.views import TiledGeoJSONLayerView
 from django.contrib.gis.db.models.functions import AsGeoJSON, Transform 
 
 import datetime
+from reportlab.pdfgen import canvas
 
 from .forms import *
 
@@ -29,7 +30,7 @@ class CampaignListView(generic.ListView):
     model = Campaign
 
 
-def index(request):
+def new_canvas(request):
 
     if request.method == 'POST':
         form = NewCanvasForm(request.POST)
@@ -49,8 +50,12 @@ def index(request):
     else:
         form = NewCanvasForm()
 
-    return render(request, 'canvasser/index.html',
+    return render(request, 'canvasser/new_canvas.html',
         {'form': form})
+
+def index(request):
+    return render(request, 'canvasser/index.html', {})
+
 
 def new_campaign(request):
 
@@ -89,6 +94,20 @@ def canvas_details(request, canvas_id):
         this_info = {'turf': turf, 'parcels': these_parcels}
         turf_info[turf.id] = this_info
     return render(request, 'canvasser/canvas_details.html', {'canvas': this_canvas, 'canvas_area': this_canvas_area, 'turf_info_dict': turf_info})
+
+def canvas_pdf(request, canvas_id):
+    this_canvas = get_object_or_404(Canvas, id=canvas_id)
+    this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
+    these_turfs = Turf.objects.filter(canvas_id=canvas_id)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="canvas-%d.pdf"' % canvas_id
+
+    p = canvas.Canvas(response)
+
+    p.showPage()
+    p.save()
+    return response
 
 def canvasser_details(request, canvasser_id):
     this_canvasser = get_object_or_404(Canvasser, id=canvasser_id)
