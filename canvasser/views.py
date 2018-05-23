@@ -8,6 +8,9 @@ from django.contrib.gis.db.models.functions import AsGeoJSON, Transform
 
 import datetime
 from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
 
 from .forms import *
 
@@ -126,10 +129,17 @@ def canvas_pdf(request, canvas_id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="canvas-%d.pdf"' % canvas_id
 
-    p = canvas.Canvas(response)
+    doc = SimpleDocTemplate(response)
+    styles = getSampleStyleSheet()
+    Story = [Spacer(1,2*inch)]
+    style = styles["Normal"]
+    for i in range(100):
+        bogustext = ("This is Paragraph number %s.  " % i) * 20
+        p = Paragraph(bogustext, style)
+        Story.append(p)
+        Story.append(Spacer(1,0.2*inch))
+    doc.build(Story)
 
-    p.showPage()
-    p.save()
     return response
 
 def canvasser_details(request, canvasser_id):

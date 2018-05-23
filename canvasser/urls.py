@@ -5,6 +5,7 @@ from .views import *
 
 urlpatterns = [
     path('', index, name='index'),
+    path('canvas-pdf/<int:canvas_id>/', canvas_pdf, name='canvas_pdf'),
     path('new-canvas', new_canvas, name='new-canvas'),
     path('new-campaign', new_campaign, name='new-campaign'),
     path('new-canvasser', new_canvasser, name='new-canvasser'),
