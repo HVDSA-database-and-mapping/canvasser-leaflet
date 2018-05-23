@@ -8,9 +8,9 @@ from django.contrib.gis.db.models.functions import AsGeoJSON, Transform
 
 import datetime
 from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, PageBreak
 from reportlab.lib.units import inch
+from reportlab.lib import colors
 
 from .forms import *
 
@@ -126,19 +126,42 @@ def canvas_pdf(request, canvas_id):
     this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
     these_turfs = Turf.objects.filter(canvas_id=canvas_id)
 
+    turf_info = []
+    for turf in these_turfs:
+        these_parcels = Parcel.objects.filter(centroid__within=turf.geom).order_by('prop_street', 'prop_street_num')
+        this_info = {'turf': turf, 'parcels': these_parcels}
+        turf_info.append(this_info)
+
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="canvas-%d.pdf"' % canvas_id
 
     doc = SimpleDocTemplate(response)
-    styles = getSampleStyleSheet()
-    Story = [Spacer(1,2*inch)]
-    style = styles["Normal"]
-    for i in range(100):
-        bogustext = ("This is Paragraph number %s.  " % i) * 20
-        p = Paragraph(bogustext, style)
-        Story.append(p)
-        Story.append(Spacer(1,0.2*inch))
-    doc.build(Story)
+    contents = []
+    style = TableStyle([('INNERGRID', (0, 2), (-1,-1), 0.25, colors.black),
+        ('BOX', (0, 0), (-1, -1), 0.5, colors.black),
+        ('LINEBELOW', (0, 0), (-1, 1), 1.0, colors.black),
+        ('LINEAFTER', (0, 1), (1, 1), 0.25, colors.black),
+        ('LINEAFTER', (4, 1), (4, 1), 0.25, colors.black),
+        ])
+
+    for info in turf_info:
+        canvassers = info['turf'].canvassers.all()
+        canvasser_row = ', '.join(['%s %s' % (c.first_name, c.last_name) for c in canvassers])
+        canvasser_header = [canvasser_row, '', '', '', '', '']
+        header = ['Address', 'Home?', 'Response', '', '', 'Notes']
+        parcel_table = [canvasser_header, header]
+
+        for parcel in info['parcels']:
+            apt_num = '' if parcel.unit_apt_num is None else parcel.unit_apt_num
+            parcel_address = '%s %s' % (parcel.prop_street_num, parcel.prop_street)
+            parcel_table.append([parcel_address, '', 1, 2, 3, ' '*40])
+
+        t = Table(parcel_table, colWidths=[150, 45, 20, 20, 20, 300], repeatRows=2)
+        t.setStyle(style)
+        contents.append(t)
+        contents.append(PageBreak())
+
+    doc.build(contents)
 
     return response
 

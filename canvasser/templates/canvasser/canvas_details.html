@@ -58,6 +58,8 @@ function map_init_canvas_area (map, options){
         <div class='detail-subpanel'>
         <p>{{ canvas.description }}</p>
         <p>{{ canvas.date }}</p>
+        <a id='pdf_button' class="btn btn-primary" href="{% url 'canvas-pdf' canvas_id=canvas.id %}">Generate Turf Sheets</a>
+
         <ul>
         {% for canvasser in canvas.canvassers.all %}
         <li>{{ canvasser.first_name }} {{ canvasser.last_name }}</li>
