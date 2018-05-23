@@ -21,6 +21,10 @@ class NewCanvasForm(ModelForm):
             'date': DateInput()
         }
 
+class NewCanvasserForm(ModelForm):
+    class Meta:
+        model = Canvasser
+        fields = ['first_name', 'last_name', 'email', 'phone_number']
 
 class CanvasAreaForm(ModelForm):
     class Meta:

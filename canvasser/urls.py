@@ -7,6 +7,7 @@ urlpatterns = [
     path('', index, name='index'),
     path('new-canvas', new_canvas, name='new-canvas'),
     path('new-campaign', new_campaign, name='new-campaign'),
+    path('new-canvasser', new_canvasser, name='new-canvasser'),
     path('campaign-details/<int:campaign_id>/', campaign_details, name='campaign-details'),
     path('canvas-details/<int:canvas_id>/', canvas_details, name='canvas-details'),
     path('canvasser-details/<int:canvasser_id>/', canvasser_details, name='canvasser-details'),
