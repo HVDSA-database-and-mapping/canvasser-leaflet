@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import generic
 from .models import *
 from djgeojson.views import TiledGeoJSONLayerView
-from django.contrib.gis.db.models.functions import AsGeoJSON, Transform 
+from django.contrib.gis.db.models.functions import AsGeoJSON, Transform
 
 import datetime
 from reportlab.pdfgen import canvas
@@ -70,7 +70,8 @@ def new_canvas(request):
             canvas_inst.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/canvasser/canvas-area/%d/' % canvas_inst.id)
+            return HttpResponseRedirect('/canvasser/canvas-area/%d/' %
+                canvas_inst.id)
 
     # If this is a GET (or any other method) create the default form.
     else:
@@ -106,9 +107,12 @@ def new_campaign(request):
     return render(request, 'canvasser/new_campaign.html',
         {'form': form})
 
+
 def campaign_details(request, campaign_id):
     this_campaign = get_object_or_404(Campaign, id=campaign_id)
-    return render(request, 'canvasser/campaign_details.html', {'campaign': this_campaign})
+    return render(request, 'canvasser/campaign_details.html',
+        {'campaign': this_campaign})
+
 
 def canvas_details(request, canvas_id):
     this_canvas = get_object_or_404(Canvas, id=canvas_id)
@@ -116,10 +120,15 @@ def canvas_details(request, canvas_id):
     these_turfs = Turf.objects.filter(canvas_id=canvas_id)
     turf_info = {}
     for turf in these_turfs:
-        these_parcels = Parcel.objects.filter(centroid__within=turf.geom).order_by('prop_street', 'prop_street_num')
+        these_parcels = Parcel.objects\
+            .filter(centroid__within=turf.geom)\
+            .order_by('prop_street', 'prop_street_num')
         this_info = {'turf': turf, 'parcels': these_parcels}
         turf_info[turf.id] = this_info
-    return render(request, 'canvasser/canvas_details.html', {'canvas': this_canvas, 'canvas_area': this_canvas_area, 'turf_info_dict': turf_info})
+    return render(request, 'canvasser/canvas_details.html',
+        {'canvas': this_canvas, 'canvas_area': this_canvas_area,
+        'turf_info_dict': turf_info})
+
 
 def canvas_pdf(request, canvas_id):
     this_canvas = get_object_or_404(Canvas, id=canvas_id)
@@ -167,8 +176,9 @@ def canvas_pdf(request, canvas_id):
 
 def canvasser_details(request, canvasser_id):
     this_canvasser = get_object_or_404(Canvasser, id=canvasser_id)
-    return render(request, 'canvasser/canvasser_details.html', {'canvasser': this_canvasser})
-    
+    return render(request, 'canvasser/canvasser_details.html',
+        {'canvasser': this_canvasser})
+
 
 def canvas_area_define(request, canvas_id):
     this_canvas = get_object_or_404(Canvas, id=canvas_id)
@@ -183,9 +193,11 @@ def canvas_area_define(request, canvas_id):
         form = CanvasAreaForm()
     return render(request, 'canvasser/canvas_area.html', {'form': form})
 
+
 def turf_define(request, canvas_id):
     this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
-    these_parcels = Parcel.objects.filter(centroid__within=this_canvas_area.geom)
+    these_parcels = Parcel.objects\
+        .filter(centroid__within=this_canvas_area.geom)
     these_turfs = Turf.objects.filter(canvas_id=canvas_id)
     if request.method == 'POST':
         form = TurfForm(request.POST)
@@ -197,9 +209,9 @@ def turf_define(request, canvas_id):
             return HttpResponseRedirect('/canvasser/turf/%d/' % canvas_id)
     else:
         form = TurfForm()
-    return render(request, 'canvasser/turf.html', 
-            {'form': form, 
-            'canvas_area': this_canvas_area, 
+    return render(request, 'canvasser/turf.html',
+            {'form': form,
+            'canvas_area': this_canvas_area,
             'canvas_id': canvas_id,
             'parcels': these_parcels,
             'turfs': these_turfs})

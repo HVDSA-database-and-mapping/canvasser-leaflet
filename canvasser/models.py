@@ -47,7 +47,8 @@ class Canvas(models.Model):
 
 
 class CanvasArea(models.Model):
-    canvas = models.OneToOneField(Canvas, on_delete=models.CASCADE, primary_key=True)
+    canvas = models.OneToOneField(Canvas,
+        on_delete=models.CASCADE, primary_key=True)
     geom = models.PolygonField(srid=4326)
 
     def __str__(self):
@@ -171,7 +172,8 @@ class Parcel(models.Model):
     pin = models.CharField(max_length=40, blank=True, null=True)
     prop_city = models.CharField(max_length=100, blank=True, null=True)
     prop_class = models.CharField(max_length=10, blank=True, null=True)
-    prop_class_description = models.CharField(max_length=100, blank=True, null=True)
+    prop_class_description = models.CharField(max_length=100,
+        blank=True, null=True)
     prop_state = models.CharField(max_length=2, blank=True, null=True)
     prop_street = models.CharField(max_length=100, blank=True, null=True)
     prop_street_num = models.DecimalField(max_digits=65535,
@@ -216,12 +218,14 @@ class Parcel(models.Model):
     def __str__(self):
         return '%s' % self.pin
 
+
 class Unit(models.Model):
     parcel = models.ForeignKey(Parcel, on_delete=models.PROTECT, blank=True)
     name = models.CharField(max_length=140, blank=True, null=True)
 
     def __str__(self):
         return '%s Unit %s' % (self.parcel.pin, self.name)
+
 
 class Interaction(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT, blank=True)
