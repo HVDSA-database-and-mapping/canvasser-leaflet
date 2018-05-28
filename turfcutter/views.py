@@ -46,13 +46,13 @@ def new_canvasser(request):
             canvasser_inst.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/canvasser/canvasser-details/%d/' % canvasser_inst.id)
+            return HttpResponseRedirect('/turfcutter/canvasser-details/%d/' % canvasser_inst.id)
 
     # If this is a GET (or any other method) create the default form.
     else:
         form = NewCanvasserForm()
 
-    return render(request, 'canvasser/new_canvasser.html',
+    return render(request, 'turfcutter/new_canvasser.html',
         {'form': form})
 
 
@@ -70,18 +70,18 @@ def new_canvas(request):
             canvas_inst.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/canvasser/canvas-area/%d/' %
+            return HttpResponseRedirect('/turfcutter/canvas-area/%d/' %
                 canvas_inst.id)
 
     # If this is a GET (or any other method) create the default form.
     else:
         form = NewCanvasForm()
 
-    return render(request, 'canvasser/new_canvas.html',
+    return render(request, 'turfcutter/new_canvas.html',
         {'form': form})
 
 def index(request):
-    return render(request, 'canvasser/index.html', {})
+    return render(request, 'turfcutter/index.html', {})
 
 
 def new_campaign(request):
@@ -98,19 +98,19 @@ def new_campaign(request):
             campaign_inst.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/canvasser/campaigns/')
+            return HttpResponseRedirect('/turfcutter/campaigns/')
 
     # If this is a GET (or any other method) create the default form.
     else:
         form = NewCampaignForm()
 
-    return render(request, 'canvasser/new_campaign.html',
+    return render(request, 'turfcutter/new_campaign.html',
         {'form': form})
 
 
 def campaign_details(request, campaign_id):
     this_campaign = get_object_or_404(Campaign, id=campaign_id)
-    return render(request, 'canvasser/campaign_details.html',
+    return render(request, 'turfcutter/campaign_details.html',
         {'campaign': this_campaign})
 
 
@@ -125,7 +125,7 @@ def canvas_details(request, canvas_id):
             .order_by('prop_street', 'prop_street_num')
         this_info = {'turf': turf, 'parcels': these_parcels}
         turf_info[turf.id] = this_info
-    return render(request, 'canvasser/canvas_details.html',
+    return render(request, 'turfcutter/canvas_details.html',
         {'canvas': this_canvas, 'canvas_area': this_canvas_area,
         'turf_info_dict': turf_info})
 
@@ -176,7 +176,7 @@ def canvas_pdf(request, canvas_id):
 
 def canvasser_details(request, canvasser_id):
     this_canvasser = get_object_or_404(Canvasser, id=canvasser_id)
-    return render(request, 'canvasser/canvasser_details.html',
+    return render(request, 'turfcutter/canvasser_details.html',
         {'canvasser': this_canvasser})
 
 
@@ -188,10 +188,10 @@ def canvas_area_define(request, canvas_id):
             canvas_area = form.save(commit=False)
             canvas_area.canvas_id = canvas_id
             canvas_area.save()
-            return HttpResponseRedirect('/canvasser/turf/%d/' % canvas_id)
+            return HttpResponseRedirect('/turfcutter/turf/%d/' % canvas_id)
     else:
         form = CanvasAreaForm()
-    return render(request, 'canvasser/canvas_area.html', {'form': form})
+    return render(request, 'turfcutter/canvas_area.html', {'form': form})
 
 
 def turf_define(request, canvas_id):
@@ -206,10 +206,10 @@ def turf_define(request, canvas_id):
             turf.canvas_id = canvas_id
             turf.save()
             form.save_m2m()
-            return HttpResponseRedirect('/canvasser/turf/%d/' % canvas_id)
+            return HttpResponseRedirect('/turfcutter/turf/%d/' % canvas_id)
     else:
         form = TurfForm()
-    return render(request, 'canvasser/turf.html',
+    return render(request, 'turfcutter/turf.html',
             {'form': form,
             'canvas_area': this_canvas_area,
             'canvas_id': canvas_id,
