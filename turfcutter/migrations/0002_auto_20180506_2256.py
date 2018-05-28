@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('canvasser', '0001_initial'),
+        ('turfcutter', '0001_initial'),
     ]
 
     operations = [
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('geom', django.contrib.gis.db.models.fields.PolygonField(srid=4326)),
-                ('canvas', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='canvasser.Canvas')),
+                ('canvas', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='turfcutter.Canvas')),
             ],
         ),
         migrations.CreateModel(
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('geom', django.contrib.gis.db.models.fields.PolygonField(srid=4326)),
-                ('canvas_area', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='canvasser.CanvasArea')),
+                ('canvas_area', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='turfcutter.CanvasArea')),
             ],
         ),
         migrations.CreateModel(
@@ -53,12 +53,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='canvassector',
             name='canvassers',
-            field=models.ManyToManyField(to='canvasser.Canvasser'),
+            field=models.ManyToManyField(to='turfcutter.Canvasser'),
         ),
         migrations.AddField(
             model_name='canvas',
             name='canvassers',
-            field=models.ManyToManyField(to='canvasser.Canvasser'),
+            field=models.ManyToManyField(to='turfcutter.Canvasser'),
         ),
         migrations.AddField(
             model_name='canvas',

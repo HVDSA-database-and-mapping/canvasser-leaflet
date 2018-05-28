@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('canvasser', '0004_auto_20180508_0038'),
+        ('turfcutter', '0004_auto_20180508_0038'),
     ]
 
     operations = [

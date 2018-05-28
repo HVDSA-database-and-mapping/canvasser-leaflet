@@ -7,14 +7,14 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('canvasser', '0005_auto_20180519_1714'),
+        ('turfcutter', '0005_auto_20180519_1714'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='canvas',
             name='campaign',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='canvasser.Campaign'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='turfcutter.Campaign'),
             preserve_default=False,
         ),
     ]

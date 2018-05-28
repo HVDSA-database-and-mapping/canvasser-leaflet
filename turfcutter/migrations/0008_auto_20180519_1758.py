@@ -8,7 +8,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('canvasser', '0007_auto_20180519_1740'),
+        ('turfcutter', '0007_auto_20180519_1740'),
     ]
 
     operations = [
@@ -19,8 +19,8 @@ class Migration(migrations.Migration):
                 ('at_home', models.BooleanField()),
                 ('response', models.SmallIntegerField()),
                 ('campaign_info', django.contrib.postgres.fields.jsonb.JSONField()),
-                ('canvas', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, to='canvasser.Canvas')),
-                ('canvassers', models.ManyToManyField(blank=True, to='canvasser.Canvasser')),
+                ('canvas', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, to='turfcutter.Canvas')),
+                ('canvassers', models.ManyToManyField(blank=True, to='turfcutter.Canvasser')),
             ],
         ),
         migrations.CreateModel(
@@ -28,12 +28,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(blank=True, max_length=140, null=True)),
-                ('parcel', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, to='canvasser.Parcel')),
+                ('parcel', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, to='turfcutter.Parcel')),
             ],
         ),
         migrations.AddField(
             model_name='interaction',
             name='unit',
-            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, to='canvasser.Unit'),
+            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, to='turfcutter.Unit'),
         ),
     ]
