@@ -222,14 +222,24 @@ class Parcel(models.Model):
     def __str__(self):
         return '%s' % self.pin
 
+RESPONSE_CHOICES = (
+    (1, 'NEGATIVE'),
+    (2, 'NEUTRAL'),
+    (3, 'POSITIVE')
+)
+
+BOOLEAN_CHOICES = (
+    (True, 'Yes'),
+    (False, 'No')
+)
 
 class Interaction(models.Model):
     parcel = models.ForeignKey(Parcel, on_delete=models.PROTECT, blank=False)
     turf = models.ForeignKey(Turf, on_delete=models.PROTECT, blank=False)
-    at_home = models.BooleanField()
-    accepted_material = models.BooleanField()
-    campaign_response = models.SmallIntegerField()
-    dsa_response = models.SmallIntegerField()
+    at_home = models.BooleanField(choices=BOOLEAN_CHOICES, default=False)
+    accepted_material = models.BooleanField(choices=BOOLEAN_CHOICES, default=False)
+    campaign_response = models.SmallIntegerField(choices=RESPONSE_CHOICES, default=2)
+    dsa_response = models.SmallIntegerField(choices=RESPONSE_CHOICES, default=2)
     campaign_info = JSONField()
     notes = models.TextField(blank=True, null=True)
 

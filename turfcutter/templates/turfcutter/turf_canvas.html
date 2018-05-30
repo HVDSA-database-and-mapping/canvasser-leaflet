@@ -10,7 +10,7 @@
     <ul>
       {% for parcel in parcel_list %}
       <li>
-        <a href="/turfcutter{{ parcel.get_absolute_url }}">{{ parcel.prop_street_num }} {{parcel.prop_street}}</a>
+          <a href="/turfcutter/interaction/{{ turf.id }}/{{parcel.id}}/">{{ parcel.prop_street_num }} {{parcel.prop_street}}</a>
       </li>
       {% endfor %}
     </ul>
