@@ -65,7 +65,7 @@ class Turf(models.Model):
         return '%s Turf %s' % (self.canvas.name, self.name)
 
     def get_absolute_url(self):
-        return '/turf-canvasser/%d/' % self.id
+        return '/turf-canvas/%d/' % self.id
 
 
 class CensusTract(models.Model):
