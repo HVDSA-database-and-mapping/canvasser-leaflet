@@ -81,7 +81,8 @@ def new_canvas(request):
         {'form': form})
 
 def index(request):
-    return render(request, 'turfcutter/index.html', {})
+    return render(request, 'turfcutter/index.html',
+        {'campaign_list': Campaign.objects.all()})
 
 
 def new_campaign(request):
