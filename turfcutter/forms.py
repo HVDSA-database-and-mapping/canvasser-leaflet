@@ -49,3 +49,5 @@ class InteractionForm(ModelForm):
         model = Interaction
         fields = ('at_home', 'accepted_material', 'campaign_response',
             'dsa_response', 'notes')
+        widgets = {'at_home': forms.RadioSelect, 'accepted_material': forms.RadioSelect,
+                'campaign_response': forms.RadioSelect, 'dsa_response': forms.RadioSelect}

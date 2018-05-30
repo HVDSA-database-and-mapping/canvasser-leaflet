@@ -223,14 +223,14 @@ class Parcel(models.Model):
         return '%s' % self.pin
 
 RESPONSE_CHOICES = (
-    (1, 'NEGATIVE'),
-    (2, 'NEUTRAL'),
-    (3, 'POSITIVE')
+    (1, u'\U0001F620'),
+    (2, u'\U0001F610'),
+    (3, u'\U0001F60D')
 )
 
 BOOLEAN_CHOICES = (
-    (True, 'Yes'),
-    (False, 'No')
+    (True, u'\U00002705'),
+    (False, u'\U0000274C')
 )
 
 class Interaction(models.Model):
