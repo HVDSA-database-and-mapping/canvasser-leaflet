@@ -235,7 +235,7 @@ def turf_canvas(request, turf_id):
     this_turf = get_object_or_404(Turf, id=turf_id)
     this_canvas = Turf.canvas
     these_parcels = Parcel.objects.filter(
-        centroid__within=turf.geom).order_by('prop_street', 'prop_street_num')
+        centroid__within=this_turf.geom).order_by('prop_street', 'prop_street_num')
     return render(request, 'turfcutter/turf_canvas.html',
         {'turf': this_turf, 'canvas': this_canvas,
         'parcel_list': these_parcels})
