@@ -57,7 +57,7 @@ class CanvasArea(models.Model):
 
 class Turf(models.Model):
     canvas = models.ForeignKey(Canvas, on_delete=models.CASCADE)
-    canvassers = models.ManyToManyField(Canvasser)
+    canvassers = models.ManyToManyField(Canvasser, blank=True)
     name = models.CharField(max_length=140)
     geom = models.PolygonField(srid=4326)
 
