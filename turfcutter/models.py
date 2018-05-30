@@ -223,22 +223,16 @@ class Parcel(models.Model):
         return '%s' % self.pin
 
 
-class Unit(models.Model):
-    parcel = models.ForeignKey(Parcel, on_delete=models.PROTECT, blank=True)
-    name = models.CharField(max_length=140, blank=True, null=True)
-
-    def __str__(self):
-        return '%s Unit %s' % (self.parcel.pin, self.name)
-
-
 class Interaction(models.Model):
-    unit = models.ForeignKey(Unit, on_delete=models.PROTECT, blank=True)
-    canvas = models.ForeignKey(Canvas, on_delete=models.PROTECT, blank=True)
-    canvassers = models.ManyToManyField(Canvasser, blank=True)
+    parcel = models.ForeignKey(Parcel, on_delete=models.PROTECT, blank=False)
+    turf = models.ForeignKey(Turf, on_delete=models.PROTECT, blank=False)
     at_home = models.BooleanField()
-    response = models.SmallIntegerField()
+    accepted_material = models.BooleanField()
+    campaign_response = models.SmallIntegerField()
+    dsa_response = models.SmallIntegerField()
     campaign_info = JSONField()
+    notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return 'Unit %s, Canvas %s' % (self.unit, self.canvas.name)
+        return 'Parcel %s, Canvas %s' % (self.unit, self.canvas.name)
 
