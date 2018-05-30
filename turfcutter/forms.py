@@ -4,6 +4,11 @@ from leaflet.forms.widgets import LeafletWidget
 from .models import *
 
 
+# https://stackoverflow.com/a/44224563
+class HorizontalRadioSelect(forms.RadioSelect):
+    template_name = 'turfcutter/horizontal_select.html'
+
+
 class DateInput(forms.DateInput):
     input_type = 'date'
 
@@ -49,5 +54,6 @@ class InteractionForm(ModelForm):
         model = Interaction
         fields = ('at_home', 'accepted_material', 'campaign_response',
             'dsa_response', 'notes')
-        widgets = {'at_home': forms.RadioSelect, 'accepted_material': forms.RadioSelect,
-                'campaign_response': forms.RadioSelect, 'dsa_response': forms.RadioSelect}
+        widgets = {'at_home': HorizontalRadioSelect, 'accepted_material': HorizontalRadioSelect,
+                'campaign_response': HorizontalRadioSelect, 'dsa_response': HorizontalRadioSelect}
+        labels= {'at_home': 'Home', 'accepted_material': 'Accept', 'campaign_response': 'Campaign', 'dsa_response': 'DSA'}

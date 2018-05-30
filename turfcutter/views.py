@@ -255,4 +255,4 @@ def new_interaction(request, turf_id, parcel_id):
     else:
         form = InteractionForm()
     return render(request, 'turfcutter/interaction.html',
-            {'form': form})
+            {'form': form, 'parcel': this_parcel})
