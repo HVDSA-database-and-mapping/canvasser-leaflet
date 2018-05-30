@@ -240,7 +240,7 @@ class Interaction(models.Model):
     accepted_material = models.BooleanField(choices=BOOLEAN_CHOICES, default=False)
     campaign_response = models.SmallIntegerField(choices=RESPONSE_CHOICES, default=2)
     dsa_response = models.SmallIntegerField(choices=RESPONSE_CHOICES, default=2)
-    campaign_info = JSONField()
+    campaign_info = JSONField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
