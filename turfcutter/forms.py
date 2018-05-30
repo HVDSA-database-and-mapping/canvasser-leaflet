@@ -11,14 +11,14 @@ class DateInput(forms.DateInput):
 class NewCampaignForm(ModelForm):
     class Meta:
         model = Campaign
-        fields = ['name', 'start_date', 'end_date', 'description']
+        fields = ['name', 'start_date', 'end_date']
         widgets = {'start_date': DateInput(), 'end_date': DateInput()}
 
 
 class NewCanvasForm(ModelForm):
     class Meta:
         model = Canvas
-        fields = ['name', 'date', 'description', 'campaign']
+        fields = ['name', 'date']
         widgets = {
             'date': DateInput()
         }

@@ -56,7 +56,7 @@ def new_canvasser(request):
         {'form': form})
 
 
-def new_canvas(request):
+def new_canvas(request, campaign_id):
 
     if request.method == 'POST':
         form = NewCanvasForm(request.POST)
@@ -67,6 +67,7 @@ def new_canvas(request):
             # (here we just write it to the model due_back field)
             canvas_inst = form.save(commit=False)
             canvas_inst.owner = request.user
+            canvas_inst.campaign = Campaign.objects.get(pk=campaign_id)
             canvas_inst.save()
 
             # redirect to a new URL:
