@@ -58,10 +58,11 @@ class CanvasArea(models.Model):
 class Turf(models.Model):
     canvas = models.ForeignKey(Canvas, on_delete=models.CASCADE)
     canvassers = models.ManyToManyField(Canvasser)
+    name = models.CharField(max_length=140)
     geom = models.PolygonField(srid=4326)
 
     def __str__(self):
-        return '%s Turf' % self.canvas.name
+        return '%s Turf %s' % (self.canvas.name, self.name)
 
 
 class CensusTract(models.Model):
