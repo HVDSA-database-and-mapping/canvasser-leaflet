@@ -2,12 +2,19 @@
 
 {% block content %}
 <div class='panel panel-primary'>
-    <div class='panel-heading'>
-        <h1 class='panel-title'>{{ campaign.name }}</h1>
-    </div>
-    <div class='panel-body'>
-        <p>{{campaign.description}}</p>
-
-    </div>
+  <div class='panel-heading'>
+    <h1 class='panel-title'>{{ campaign.name }}</h1>
+  </div>
+  <div class='panel-body'>
+    <p>{{campaign.description}}</p>
+    <ul>
+      {% for canvas in canvas_list %}
+      <li>
+        <a href="/turfcutter{{ canvas.get_absolute_url }}">{{ canvas.name }}</a> ({{canvas.description}})
+      </li>
+      {% endfor %}
+    </ul>
+    <a id='canvas_button' class="btn btn-primary" href="{% url 'new-canvas' %}">New Canvas</a>
+  </div>
 </div>
 {% endblock %}

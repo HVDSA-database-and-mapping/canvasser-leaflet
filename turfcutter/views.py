@@ -80,6 +80,7 @@ def new_canvas(request):
     return render(request, 'turfcutter/new_canvas.html',
         {'form': form})
 
+
 def index(request):
     return render(request, 'turfcutter/index.html',
         {'campaign_list': Campaign.objects.all()})
@@ -111,8 +112,9 @@ def new_campaign(request):
 
 def campaign_details(request, campaign_id):
     this_campaign = get_object_or_404(Campaign, id=campaign_id)
+    canvas_list = Canvas.objects.filter(campaign.id=campaign_id)
     return render(request, 'turfcutter/campaign_details.html',
-        {'campaign': this_campaign})
+        {'campaign': this_campaign, 'canvas_list': canvas_list})
 
 
 def canvas_details(request, canvas_id):
