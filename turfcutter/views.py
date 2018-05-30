@@ -225,7 +225,7 @@ def turf_define(request, canvas_id):
 
 
 def turf_select(request, canvas_id):
-    this_canvas = get_object_or_404(Canvas, canvas_id=canvas_id)
-    these_turfs = Turf.objects.filter(canvas_id=canvas_id)
-    return render(request, 'turfcutter/turf-selection/%d/' % canvas_id,
+    this_canvas = get_object_or_404(Canvas, id=canvas_id)
+    these_turfs = Turf.objects.filter(canvas_id=canvas_id).order_by('name')
+    return render(request, 'turfcutter/turf_selection.html',
         {'turf_list': these_turfs, 'canvas': this_canvas})
