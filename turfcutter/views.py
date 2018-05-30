@@ -112,7 +112,7 @@ def new_campaign(request):
 
 def campaign_details(request, campaign_id):
     this_campaign = get_object_or_404(Campaign, id=campaign_id)
-    canvas_list = Canvas.objects.filter(campaign.id=campaign_id)
+    canvas_list = Canvas.objects.filter(campaign_id=campaign_id)
     return render(request, 'turfcutter/campaign_details.html',
         {'campaign': this_campaign, 'canvas_list': canvas_list})
 
@@ -202,11 +202,14 @@ def turf_define(request, canvas_id):
     these_parcels = Parcel.objects\
         .filter(centroid__within=this_canvas_area.geom)
     these_turfs = Turf.objects.filter(canvas_id=canvas_id)
+    turf_numbers = [int(t.name) for t in these_turfs]
+    max_number = max(turf_numbers) if len(turf_numbers) > 0 else 0
     if request.method == 'POST':
         form = TurfForm(request.POST)
         if form.is_valid():
             turf = form.save(commit=False)
             turf.canvas_id = canvas_id
+            turf.name = str(max_number + 1)
             turf.save()
             form.save_m2m()
             return HttpResponseRedirect('/turfcutter/turf/%d/' % canvas_id)

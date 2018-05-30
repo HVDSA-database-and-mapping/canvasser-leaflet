@@ -7,7 +7,7 @@
 label[for="id_geom"] { display:none; }
 #submit-sectors {
   position: absolute;
-  top: 122;
+  top: 12;
   right: 12;
   z-index: 10;
   width: 200;
@@ -22,23 +22,14 @@ label[for="id_geom"] { display:none; }
   right: 0;
   z-index: 5;
   width: 220;
-  height: 220;
+  height: 110;
   border-radius: 0px 0px 0px 20px;
   background-color: #FFFFFF;
-}
-#id_canvassers {
-  position: absolute;
-  top: 12;
-  right: 12;
-  width: 200;
-  height: 100;
-  z-index: 10;
-  border-radius: 12px;
 }
 #complete_button {
   position: absolute;
   z-index: 10;
-  top: 172;
+  top: 62;
   right: 12;
   width: 200;
   height: 40;
@@ -86,15 +77,7 @@ label[for="id_geom"] { display:none; }
       {% endfor %}
       {% for turf in turfs %}
       var sector = L.geoJSON({% autoescape off %}{{ turf.geom.json }}{% endautoescape %}, turf_style).addTo(map);
-        var canvasser_names = [];
-        {% for canvasser in turf.canvassers.all %}
-        canvasser_names.push('{{ canvasser.first_name }} {{ canvasser.last_name }}');
-        {% endfor %}
-        var canvasser_names_str = canvasser_names.join(', ');
-        sector.bindTooltip(canvasser_names_str,
-                 {permanent: true, direction:"center"}
-                   ).openTooltip()
-
+      sector.bindTooltip("{{ turf.name }}", {permanent: true, direction:"center"}).openTooltip();
       {% endfor %}
     });
   </script>

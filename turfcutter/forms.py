@@ -38,6 +38,6 @@ class CanvasAreaForm(ModelForm):
 class TurfForm(ModelForm):
     class Meta:
         model = Turf
-        fields = ('geom', 'canvassers')
+        fields = ('geom',)
         widgets = {'geom': LeafletWidget()}
 
