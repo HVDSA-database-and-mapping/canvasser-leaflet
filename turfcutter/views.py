@@ -112,7 +112,7 @@ def new_campaign(request):
 
 def campaign_details(request, campaign_id):
     this_campaign = get_object_or_404(Campaign, id=campaign_id)
-    canvas_list = Canvas.objects.filter(campaign.id=campaign_id)
+    canvas_list = Canvas.objects.filter(campaign_id=campaign_id)
     return render(request, 'turfcutter/campaign_details.html',
         {'campaign': this_campaign, 'canvas_list': canvas_list})
 
