@@ -239,3 +239,20 @@ def turf_canvas(request, turf_id):
     return render(request, 'turfcutter/turf_canvas.html',
         {'turf': this_turf, 'canvas': this_canvas,
         'parcel_list': these_parcels})
+
+
+def new_interaction(request, turf_id, parcel_id):
+    this_turf = get_object_or_404(Turf, id=turf_id)
+    this_parcel = get_object_or_404(Parcel, id=parcel_id)
+    if request.method == 'POST':
+        form = InteractionForm(request.POST)
+        if form.is_valid():
+            interaction = form.save(commit=False)
+            interaction.turf = this_turf
+            interaction.parcel = this_parcel
+            interaction.save()
+            return HttpResponseRedirect('/turfcutter/turf-canvas/%d/' % turf_id)
+    else:
+        form = InteractionForm()
+    return render(request, 'turfcutter/interaction.html',
+            {'form': form})

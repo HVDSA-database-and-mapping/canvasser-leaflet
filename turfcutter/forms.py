@@ -23,10 +23,12 @@ class NewCanvasForm(ModelForm):
             'date': DateInput()
         }
 
+
 class NewCanvasserForm(ModelForm):
     class Meta:
         model = Canvasser
         fields = ['first_name', 'last_name', 'email', 'phone_number']
+
 
 class CanvasAreaForm(ModelForm):
     class Meta:
@@ -41,3 +43,9 @@ class TurfForm(ModelForm):
         fields = ('geom',)
         widgets = {'geom': LeafletWidget()}
 
+
+class InteractionForm(ModelForm):
+    class Meta:
+        model = Interaction
+        fields = ('at_home', 'accepted_material', 'campaign_response',
+            'dsa_response', 'notes')
