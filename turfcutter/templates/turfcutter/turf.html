@@ -37,6 +37,20 @@ label[for="id_geom"] { display:none; }
   font-size: 16;
   border-radius: 12px;
 }
+#instructions {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 33%;
+  width: 34%;
+  height: 60px;
+  background-color: #FFFFFF;
+  font-size: 14;
+  font-weight: bold;
+  border-radius: 0px 0px 20px 20px;
+  text-align: center;
+  line-height: 60px;
+}
 </style>
 {% load leaflet_tags %}
 <html>
@@ -89,6 +103,7 @@ label[for="id_geom"] { display:none; }
         {% csrf_token %}
         {{ form }}
         <div id='button-outline'></div>
+        <div id='instructions'>Draw a turf. Then <i>Assign Turf</i>. When you're done, <i>Finish Canvas</i>.</div>
         <input id='submit-sectors' type="submit" value="Assign Turf"/>
     </form>
     <a id='complete_button' class="btn btn-primary" href="{% url 'canvas-details' canvas_id=canvas_id %}">Finish Canvas</a>

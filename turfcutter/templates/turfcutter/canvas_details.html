@@ -60,11 +60,6 @@ function map_init_canvas_area (map, options){
         <p>{{ canvas.date }}</p>
         <a id='pdf_button' class="btn btn-primary" href="{% url 'canvas-pdf' canvas_id=canvas.id %}">Generate Turf Sheets</a>
 
-        <ul>
-        {% for canvasser in canvas.canvassers.all %}
-        <li>{{ canvasser.first_name }} {{ canvasser.last_name }}</li>
-        {% endfor %}
-        </ul>
         </div>
         {% leaflet_map "area_map" callback="window.map_init_canvas_area" %}
     </div>
@@ -74,9 +69,7 @@ function map_init_canvas_area (map, options){
     <div class='panel-heading'>
         <h1 class='panel-title'>
             <a data-toggle='collapse' href='#collapse{{turf_id}}'>
-            {% for canvasser in turf_info.turf.canvassers.all %}
-            {{ canvasser.first_name }} {{ canvasser.last_name }},
-            {% endfor %}
+                {{ turf_info.turf.name }}
             </a>
         </h1>
     </div>

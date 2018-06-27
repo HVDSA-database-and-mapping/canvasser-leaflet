@@ -113,7 +113,7 @@ def new_campaign(request):
 
 def campaign_details(request, campaign_id):
     this_campaign = get_object_or_404(Campaign, id=campaign_id)
-    canvas_list = Canvas.objects.filter(campaign_id=campaign_id)
+    canvas_list = Canvas.objects.filter(campaign_id=campaign_id).order_by('date')
     return render(request, 'turfcutter/campaign_details.html',
         {'campaign': this_campaign, 'canvas_list': canvas_list})
 
@@ -121,7 +121,7 @@ def campaign_details(request, campaign_id):
 def canvas_details(request, canvas_id):
     this_canvas = get_object_or_404(Canvas, id=canvas_id)
     this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
-    these_turfs = Turf.objects.filter(canvas_id=canvas_id)
+    these_turfs = Turf.objects.filter(canvas_id=canvas_id).order_by('name')
     turf_info = {}
     for turf in these_turfs:
         these_parcels = Parcel.objects\
@@ -150,26 +150,28 @@ def canvas_pdf(request, canvas_id):
 
     doc = SimpleDocTemplate(response)
     contents = []
-    style = TableStyle([('INNERGRID', (0, 2), (-1,-1), 0.25, colors.black),
+    style = TableStyle([('INNERGRID', (0, 3), (-1,-1), 0.25, colors.black),
         ('BOX', (0, 0), (-1, -1), 0.5, colors.black),
-        ('LINEBELOW', (0, 0), (-1, 1), 1.0, colors.black),
-        ('LINEAFTER', (0, 1), (1, 1), 0.25, colors.black),
-        ('LINEAFTER', (4, 1), (4, 1), 0.25, colors.black),
+        ('LINEBELOW', (0, 1), (-1, 1), 0.25, colors.black),
+        ('LINEBELOW', (0, 2), (-1, 2), 1.0, colors.black),
+        ('LINEAFTER', (0, 2), (2, 2), 0.25, colors.black),
+        ('LINEAFTER', (5, 2), (5, 2), 0.25, colors.black),
+        ('FONT', (0, 0), (0, 0), 'Times-Bold'),
+        ('FONTSIZE', (0, 0), (0, 0), 16)
         ])
 
     for info in turf_info:
-        canvassers = info['turf'].canvassers.all()
-        canvasser_row = ', '.join(['%s %s' % (c.first_name, c.last_name) for c in canvassers])
-        canvasser_header = [canvasser_row, '', '', '', '', '']
-        header = ['Address', 'Home?', 'Response', '', '', 'Notes']
-        parcel_table = [canvasser_header, header]
+        turfname_row = ['Turf %s' % info['turf'].name, '', '', '', '', '', '']
+        header_buffer = [''] * len(turfname_row)
+        header = ['Address', 'Home?', 'Accept?', 'Response', '', '', 'Notes']
+        parcel_table = [turfname_row, header_buffer, header]
 
         for parcel in info['parcels']:
             apt_num = '' if parcel.unit_apt_num is None else parcel.unit_apt_num
             parcel_address = '%s %s' % (parcel.prop_street_num, parcel.prop_street)
-            parcel_table.append([parcel_address, '', 1, 2, 3, ' '*40])
+            parcel_table.append([parcel_address, '', '', 1, 2, 3, ' '*40])
 
-        t = Table(parcel_table, colWidths=[150, 45, 20, 20, 20, 300], repeatRows=2)
+        t = Table(parcel_table, colWidths=[150, 45, 45, 20, 20, 20, 265], repeatRows=2)
         t.setStyle(style)
         contents.append(t)
         contents.append(PageBreak())

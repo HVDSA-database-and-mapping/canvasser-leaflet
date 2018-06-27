@@ -26,6 +26,19 @@ label[for="id_geom"] { display:none; }
   border-radius: 0px 0px 0px 20px;
   background-color: #FFFFFF;
 }
+#instructions {
+  font-weight: bold;
+  position: absolute;
+  text-align: center;
+  line-height: 60px;
+  top: 0;
+  right: 40%;
+  z-index: 5;
+  width: 20%;
+  height: 60;
+  background-color: #FFFFFF;
+  border-radius: 0px 0px 20px 20px;
+}
 </style>
 {% load leaflet_tags %}
 <html>
@@ -37,8 +50,8 @@ label[for="id_geom"] { display:none; }
     <form action="" method="POST">
         {% csrf_token %}
         {{ form }}
-        <div id='button-outline'>
-        </div>
+        <div id='button-outline'></div>
+        <div id='instructions'>Draw the total area you wish to canvas.</div>
         <input type="submit" value="Complete" id='submit_area'/>
     </form>
   </body>
