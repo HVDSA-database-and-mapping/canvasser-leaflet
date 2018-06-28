@@ -83,7 +83,7 @@ label[for="id_geom"] { display:none; }
         "fillColor": "#ff9966",
         "color": "#ff9966"
       };
-      var polygon = L.geoJSON({% autoescape off %}{{ canvas_area.geom.json }}{% endautoescape %}, area_style).addTo(map);
+      var polygon = L.geoJSON({% autoescape off %}{{ canvass_area.geom.json }}{% endautoescape %}, area_style).addTo(map);
       // zoom the map to the polygon
       map.fitBounds(polygon.getBounds());
       {% for parcel in parcels %}
