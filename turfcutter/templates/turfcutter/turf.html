@@ -103,9 +103,9 @@ label[for="id_geom"] { display:none; }
         {% csrf_token %}
         {{ form }}
         <div id='button-outline'></div>
-        <div id='instructions'>Draw a turf. Then <i>Assign Turf</i>. When you're done, <i>Finish Canvas</i>.</div>
+        <div id='instructions'>Draw a turf. Then <i>Assign Turf</i>. When you're done, <i>Finish Canvass</i>.</div>
         <input id='submit-sectors' type="submit" value="Assign Turf"/>
     </form>
-    <a id='complete_button' class="btn btn-primary" href="{% url 'canvas-details' canvas_id=canvas_id %}">Finish Canvas</a>
+    <a id='complete_button' class="btn btn-primary" href="{% url 'canvass-details' canvass_id=canvass_id %}">Finish Canvass</a>
   </body>
 </html>

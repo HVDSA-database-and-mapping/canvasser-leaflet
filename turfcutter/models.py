@@ -31,7 +31,7 @@ class Canvasser(models.Model):
         return '/canvasser-details/%d/' % self.id
 
 
-class Canvas(models.Model):
+class Canvass(models.Model):
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
     name = models.CharField(max_length=140)
     date = models.DateField(default=date.today)
@@ -43,29 +43,29 @@ class Canvas(models.Model):
         return '%s' % self.name
 
     def get_absolute_url(self):
-        return '/canvas-details/%d/' % self.id
+        return '/canvass-details/%d/' % self.id
 
 
-class CanvasArea(models.Model):
-    canvas = models.OneToOneField(Canvas,
+class CanvassArea(models.Model):
+    canvass = models.OneToOneField(Canvass,
         on_delete=models.CASCADE, primary_key=True)
     geom = models.PolygonField(srid=4326)
 
     def __str__(self):
-        return '%s Area' % self.canvas.name
+        return '%s Area' % self.canvass.name
 
 
 class Turf(models.Model):
-    canvas = models.ForeignKey(Canvas, on_delete=models.CASCADE)
+    canvass = models.ForeignKey(Canvass, on_delete=models.CASCADE)
     canvassers = models.ManyToManyField(Canvasser, blank=True)
     name = models.CharField(max_length=140)
     geom = models.PolygonField(srid=4326)
 
     def __str__(self):
-        return '%s Turf %s' % (self.canvas.name, self.name)
+        return '%s Turf %s' % (self.canvass.name, self.name)
 
     def get_absolute_url(self):
-        return '/turf-canvas/%d/' % self.id
+        return '/turf-canvass/%d/' % self.id
 
 
 class CensusTract(models.Model):
@@ -233,6 +233,7 @@ BOOLEAN_CHOICES = (
     (False, u'\U0000274C')
 )
 
+
 class Interaction(models.Model):
     parcel = models.ForeignKey(Parcel, on_delete=models.PROTECT, blank=False)
     turf = models.ForeignKey(Turf, on_delete=models.PROTECT, blank=False)
@@ -244,5 +245,5 @@ class Interaction(models.Model):
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return 'Parcel %s, Canvas %s' % (self.unit, self.canvas.name)
+        return 'Parcel %s, Canvass %s' % (self.unit, self.turf.canvass.name)
 

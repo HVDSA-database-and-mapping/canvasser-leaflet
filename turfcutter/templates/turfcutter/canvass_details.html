@@ -1,12 +1,12 @@
 {% extends "turfcutter/base.html" %}
 
 {% block title %}
-<title> Canvas Details </title>
+<title> Canvass Details </title>
 {% load leaflet_tags %}
 {% leaflet_js %}
 {% leaflet_css %}
 <script type="text/javascript">
-function map_init_canvas_area (map, options){
+function map_init_canvass_area (map, options){
     var style = {
       "stroke": true,
       "weight": 2,
@@ -15,7 +15,7 @@ function map_init_canvas_area (map, options){
       "opacity": 0.8,
       "fillOpacity": 0.4,
     };
-    var polygon = L.geoJSON({% autoescape off %}{{ canvas_area.geom.json }}{% endautoescape %}, style).addTo(map);
+    var polygon = L.geoJSON({% autoescape off %}{{ canvass_area.geom.json }}{% endautoescape %}, style).addTo(map);
     map.fitBounds(polygon.getBounds());
     map.dragging.disable();
     map.touchZoom.disable();
@@ -44,7 +44,7 @@ function map_init_canvas_area (map, options){
 }
 </style>
 {% endblock %}
-    
+
 
 {% block content %}
 <div class='panel-group'>
@@ -56,12 +56,12 @@ function map_init_canvas_area (map, options){
     </div>
     <div id='collapse1' class='panel-collapse collapse in'>
         <div class='detail-subpanel'>
-        <p>{{ canvas.description }}</p>
-        <p>{{ canvas.date }}</p>
-        <a id='pdf_button' class="btn btn-primary" href="{% url 'canvas-pdf' canvas_id=canvas.id %}">Generate Turf Sheets</a>
+        <p>{{ canvass.description }}</p>
+        <p>{{ canvass.date }}</p>
+        <a id='pdf_button' class="btn btn-primary" href="{% url 'canvass-pdf' canvass_id=canvass.id %}">Generate Turf Sheets</a>
 
         </div>
-        {% leaflet_map "area_map" callback="window.map_init_canvas_area" %}
+        {% leaflet_map "area_map" callback="window.map_init_canvass_area" %}
     </div>
 </div>
 {% for turf_id, turf_info in turf_info_dict.items %}

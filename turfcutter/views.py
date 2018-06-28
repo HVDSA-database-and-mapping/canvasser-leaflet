@@ -21,8 +21,8 @@ class UntrimmedTiledGeoJSONLayerView(TiledGeoJSONLayerView):
         self.trim_to_boundary = False
 
 
-class CanvasListView(generic.ListView):
-    model = Canvas
+class CanvassListView(generic.ListView):
+    model = Canvass
 
 
 class CanvasserListView(generic.ListView):
@@ -56,29 +56,29 @@ def new_canvasser(request):
         {'form': form})
 
 
-def new_canvas(request, campaign_id):
+def new_canvass(request, campaign_id):
 
     if request.method == 'POST':
-        form = NewCanvasForm(request.POST)
+        form = NewCanvassForm(request.POST)
 
         # Check if the form is valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # (here we just write it to the model due_back field)
-            canvas_inst = form.save(commit=False)
-            canvas_inst.owner = request.user
-            canvas_inst.campaign = Campaign.objects.get(pk=campaign_id)
-            canvas_inst.save()
+            canvass_inst = form.save(commit=False)
+            canvass_inst.owner = request.user
+            canvass_inst.campaign = Campaign.objects.get(pk=campaign_id)
+            canvass_inst.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/turfcutter/canvas-area/%d/' %
-                canvas_inst.id)
+            return HttpResponseRedirect('/turfcutter/canvass-area/%d/' %
+                canvass_inst.id)
 
     # If this is a GET (or any other method) create the default form.
     else:
-        form = NewCanvasForm()
+        form = NewCanvassForm()
 
-    return render(request, 'turfcutter/new_canvas.html',
+    return render(request, 'turfcutter/new_canvass.html',
         {'form': form})
 
 
@@ -113,15 +113,15 @@ def new_campaign(request):
 
 def campaign_details(request, campaign_id):
     this_campaign = get_object_or_404(Campaign, id=campaign_id)
-    canvas_list = Canvas.objects.filter(campaign_id=campaign_id).order_by('date')
+    canvass_list = Canvass.objects.filter(campaign_id=campaign_id).order_by('date')
     return render(request, 'turfcutter/campaign_details.html',
-        {'campaign': this_campaign, 'canvas_list': canvas_list})
+        {'campaign': this_campaign, 'canvass_list': canvass_list})
 
 
-def canvas_details(request, canvas_id):
-    this_canvas = get_object_or_404(Canvas, id=canvas_id)
-    this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
-    these_turfs = Turf.objects.filter(canvas_id=canvas_id).order_by('name')
+def canvass_details(request, canvass_id):
+    this_canvass = get_object_or_404(Canvass, id=canvass_id)
+    this_canvass_area = get_object_or_404(CanvassArea, canvass_id=canvass_id)
+    these_turfs = Turf.objects.filter(canvass_id=canvass_id).order_by('name')
     turf_info = {}
     for turf in these_turfs:
         these_parcels = Parcel.objects\
@@ -129,28 +129,31 @@ def canvas_details(request, canvas_id):
             .order_by('prop_street', 'prop_street_num')
         this_info = {'turf': turf, 'parcels': these_parcels}
         turf_info[turf.id] = this_info
-    return render(request, 'turfcutter/canvas_details.html',
-        {'canvas': this_canvas, 'canvas_area': this_canvas_area,
+    return render(request, 'turfcutter/canvass_details.html',
+        {'canvass': this_canvass, 'canvass_area': this_canvass_area,
         'turf_info_dict': turf_info})
 
 
-def canvas_pdf(request, canvas_id):
-    this_canvas = get_object_or_404(Canvas, id=canvas_id)
-    this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
-    these_turfs = Turf.objects.filter(canvas_id=canvas_id)
+def canvass_pdf(request, canvass_id):
+    this_canvass = get_object_or_404(Canvass, id=canvass_id)
+    this_canvass_area = get_object_or_404(CanvassArea, canvass_id=canvass_id)
+    these_turfs = Turf.objects.filter(canvass_id=canvass_id)
 
     turf_info = []
     for turf in these_turfs:
-        these_parcels = Parcel.objects.filter(centroid__within=turf.geom).order_by('prop_street', 'prop_street_num')
+        these_parcels = Parcel.objects.filter(
+            centroid__within=turf.geom).order_by(
+            'prop_street', 'prop_street_num')
         this_info = {'turf': turf, 'parcels': these_parcels}
         turf_info.append(this_info)
 
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="canvas-%d.pdf"' % canvas_id
+    response['Content-Disposition'] = \
+        'attachment; filename="canvass-%d.pdf"' % canvass_id
 
     doc = SimpleDocTemplate(response)
     contents = []
-    style = TableStyle([('INNERGRID', (0, 3), (-1,-1), 0.25, colors.black),
+    style = TableStyle([('INNERGRID', (0, 3), (-1, -1), 0.25, colors.black),
         ('BOX', (0, 0), (-1, -1), 0.5, colors.black),
         ('LINEBELOW', (0, 1), (-1, 1), 0.25, colors.black),
         ('LINEBELOW', (0, 2), (-1, 2), 1.0, colors.black),
@@ -158,7 +161,7 @@ def canvas_pdf(request, canvas_id):
         ('LINEAFTER', (5, 2), (5, 2), 0.25, colors.black),
         ('FONT', (0, 0), (0, 0), 'Times-Bold'),
         ('FONTSIZE', (0, 0), (0, 0), 16)
-        ])
+    ])
 
     for info in turf_info:
         turfname_row = ['Turf %s' % info['turf'].name, '', '', '', '', '', '']
@@ -169,7 +172,7 @@ def canvas_pdf(request, canvas_id):
         for parcel in info['parcels']:
             apt_num = '' if parcel.unit_apt_num is None else parcel.unit_apt_num
             parcel_address = '%s %s' % (parcel.prop_street_num, parcel.prop_street)
-            parcel_table.append([parcel_address, '', '', 1, 2, 3, ' '*40])
+            parcel_table.append([parcel_address, '', '', 1, 2, 3, ' ' * 40])
 
         t = Table(parcel_table, colWidths=[150, 45, 45, 20, 20, 20, 265], repeatRows=2)
         t.setStyle(style)
@@ -180,66 +183,68 @@ def canvas_pdf(request, canvas_id):
 
     return response
 
+
 def canvasser_details(request, canvasser_id):
     this_canvasser = get_object_or_404(Canvasser, id=canvasser_id)
     return render(request, 'turfcutter/canvasser_details.html',
         {'canvasser': this_canvasser})
 
 
-def canvas_area_define(request, canvas_id):
-    this_canvas = get_object_or_404(Canvas, id=canvas_id)
+def canvass_area_define(request, canvass_id):
+    this_canvass = get_object_or_404(Canvass, id=canvass_id)
     if request.method == 'POST':
-        form = CanvasAreaForm(request.POST)
+        form = CanvassAreaForm(request.POST)
         if form.is_valid():
-            canvas_area = form.save(commit=False)
-            canvas_area.canvas_id = canvas_id
-            canvas_area.save()
-            return HttpResponseRedirect('/turfcutter/turf/%d/' % canvas_id)
+            canvass_area = form.save(commit=False)
+            canvass_area.canvass_id = canvass_id
+            canvass_area.save()
+            return HttpResponseRedirect('/turfcutter/turf/%d/' % canvass_id)
     else:
-        form = CanvasAreaForm()
-    return render(request, 'turfcutter/canvas_area.html', {'form': form})
+        form = CanvassAreaForm()
+    return render(request, 'turfcutter/canvass_area.html', {'form': form})
 
 
-def turf_define(request, canvas_id):
-    this_canvas_area = get_object_or_404(CanvasArea, canvas_id=canvas_id)
+def turf_define(request, canvass_id):
+    this_canvass_area = get_object_or_404(CanvassArea, canvass_id=canvass_id)
     these_parcels = Parcel.objects\
-        .filter(centroid__within=this_canvas_area.geom)
-    these_turfs = Turf.objects.filter(canvas_id=canvas_id)
+        .filter(centroid__within=this_canvass_area.geom)
+    these_turfs = Turf.objects.filter(canvass_id=canvass_id)
     turf_numbers = [int(t.name) for t in these_turfs]
     max_number = max(turf_numbers) if len(turf_numbers) > 0 else 0
     if request.method == 'POST':
         form = TurfForm(request.POST)
         if form.is_valid():
             turf = form.save(commit=False)
-            turf.canvas_id = canvas_id
+            turf.canvass_id = canvass_id
             turf.name = str(max_number + 1)
             turf.save()
             form.save_m2m()
-            return HttpResponseRedirect('/turfcutter/turf/%d/' % canvas_id)
+            return HttpResponseRedirect('/turfcutter/turf/%d/' % canvass_id)
     else:
         form = TurfForm()
     return render(request, 'turfcutter/turf.html',
             {'form': form,
-            'canvas_area': this_canvas_area,
-            'canvas_id': canvas_id,
+            'canvass_area': this_canvass_area,
+            'canvass_id': canvass_id,
             'parcels': these_parcels,
             'turfs': these_turfs})
 
 
-def turf_select(request, canvas_id):
-    this_canvas = get_object_or_404(Canvas, id=canvas_id)
-    these_turfs = Turf.objects.filter(canvas_id=canvas_id).order_by('name')
+def turf_select(request, canvass_id):
+    this_canvass = get_object_or_404(Canvass, id=canvass_id)
+    these_turfs = Turf.objects.filter(canvass_id=canvass_id).order_by('name')
     return render(request, 'turfcutter/turf_selection.html',
-        {'turf_list': these_turfs, 'canvas': this_canvas})
+        {'turf_list': these_turfs, 'canvass': this_canvass})
 
 
-def turf_canvas(request, turf_id):
+def turf_canvass(request, turf_id):
     this_turf = get_object_or_404(Turf, id=turf_id)
-    this_canvas = Turf.canvas
-    these_parcels = Parcel.objects.filter(
-        centroid__within=this_turf.geom).order_by('prop_street', 'prop_street_num')
-    return render(request, 'turfcutter/turf_canvas.html',
-        {'turf': this_turf, 'canvas': this_canvas,
+    this_canvass = Turf.canvass
+    these_parcels = Parcel.objects\
+        .filter(centroid__within=this_turf.geom)\
+        .order_by('prop_street', 'prop_street_num')
+    return render(request, 'turfcutter/turf_canvass.html',
+        {'turf': this_turf, 'canvass': this_canvass,
         'parcel_list': these_parcels})
 
 
@@ -253,7 +258,8 @@ def new_interaction(request, turf_id, parcel_id):
             interaction.turf = this_turf
             interaction.parcel = this_parcel
             interaction.save()
-            return HttpResponseRedirect('/turfcutter/turf-canvas/%d/' % turf_id)
+            return HttpResponseRedirect(
+                '/turfcutter/turf-canvass/%d/' % turf_id)
     else:
         form = InteractionForm()
     return render(request, 'turfcutter/interaction.html',

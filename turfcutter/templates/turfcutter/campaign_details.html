@@ -8,13 +8,13 @@
   <div class='panel-body'>
     <p>{{campaign.description}}</p>
     <ul>
-      {% for canvas in canvas_list %}
+      {% for canvass in canvass_list %}
       <li>
-        <a href="/turfcutter{{ canvas.get_absolute_url }}">{{ canvas.name }}</a>
+        <a href="/turfcutter{{ canvass.get_absolute_url }}">{{ canvass.name }}</a>
       </li>
       {% endfor %}
     </ul>
-    <a id='canvas_button' class="btn btn-primary" href="{% url 'new-canvas' campaign_id=campaign.id %}">New Canvas</a>
+    <a id='canvass_button' class="btn btn-primary" href="{% url 'new-canvass' campaign_id=campaign.id %}">New Canvass</a>
   </div>
 </div>
 {% endblock %}

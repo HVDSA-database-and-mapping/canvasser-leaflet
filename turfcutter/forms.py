@@ -20,9 +20,9 @@ class NewCampaignForm(ModelForm):
         widgets = {'start_date': DateInput(), 'end_date': DateInput()}
 
 
-class NewCanvasForm(ModelForm):
+class NewCanvassForm(ModelForm):
     class Meta:
-        model = Canvas
+        model = Canvass
         fields = ['name', 'date']
         widgets = {
             'date': DateInput()
@@ -35,9 +35,9 @@ class NewCanvasserForm(ModelForm):
         fields = ['first_name', 'last_name', 'email', 'phone_number']
 
 
-class CanvasAreaForm(ModelForm):
+class CanvassAreaForm(ModelForm):
     class Meta:
-        model = CanvasArea
+        model = CanvassArea
         fields = ('geom',)
         widgets = {'geom': LeafletWidget()}
 
