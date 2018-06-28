@@ -11,6 +11,8 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, PageBreak
 from reportlab.lib.units import inch
 from reportlab.lib import colors
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 from .forms import *
 
@@ -151,6 +153,10 @@ def canvass_pdf(request, canvass_id):
     response['Content-Disposition'] = \
         'attachment; filename="canvass-%d.pdf"' % canvass_id
 
+    font_file = '/home/rwturner/django-apps/hvdsa/turfcutter/static/Symbola_hint.ttf'
+    symbola_font = TTFont('Symbola', font_file)
+    pdfmetrics.registerFont(symbola_font)
+
     doc = SimpleDocTemplate(response)
     contents = []
     style = TableStyle([('INNERGRID', (0, 3), (-1, -1), 0.25, colors.black),
@@ -159,7 +165,7 @@ def canvass_pdf(request, canvass_id):
         ('LINEBELOW', (0, 2), (-1, 2), 1.0, colors.black),
         ('LINEAFTER', (0, 2), (2, 2), 0.25, colors.black),
         ('LINEAFTER', (5, 2), (5, 2), 0.25, colors.black),
-        ('FONT', (0, 0), (0, 0), 'Times-Bold'),
+        ('FONT', (0, 0), (-1, -1), 'Symbola'),
         ('FONTSIZE', (0, 0), (0, 0), 16)
     ])
 
@@ -172,7 +178,7 @@ def canvass_pdf(request, canvass_id):
         for parcel in info['parcels']:
             apt_num = '' if parcel.unit_apt_num is None else parcel.unit_apt_num
             parcel_address = '%s %s' % (parcel.prop_street_num, parcel.prop_street)
-            parcel_table.append([parcel_address, '', '', 1, 2, 3, ' ' * 40])
+            parcel_table.append([parcel_address, '', '', '\u263A', u"\U0001F610", '\u2639', ' ' * 40])
 
         t = Table(parcel_table, colWidths=[150, 45, 45, 20, 20, 20, 265], repeatRows=2)
         t.setStyle(style)
