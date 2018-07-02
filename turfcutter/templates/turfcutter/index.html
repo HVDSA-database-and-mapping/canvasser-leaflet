@@ -1,0 +1,25 @@
+{% extends "turfcutter/base.html" %}
+
+{% block content %}
+
+<style>
+#id_name { width: 20em; }
+#id_description { width: 20em; }
+</style>
+
+<div class='jumbotron'>
+    <div class=row>
+        <div class='col-md-4 col-md-offset-4 text-center'>
+          <h2> Active Campaigns </h2>
+          <ul>
+            {% for campaign in campaign_list %}
+            <li>
+              <a href="/turfcutter{{ campaign.get_absolute_url }}">{{ campaign.name }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+          <a id='campaign_button' class="btn btn-primary" href="{% url 'new-campaign' %}">New Campaign</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+<style>
+.leaflet-container {  /* all maps */
+  width:  100%;
+  height: 100%;
+  z-index: 1;
+}
+label[for="id_geom"] { display:none; }
+#submit_area {
+  position: absolute;
+  top: 12;
+  right: 12;
+  z-index: 10;
+  width: 200;
+  height: 40;
+  background-color: #36e24a;
+  font-size: 16;
+  border-radius: 12px;
+}
+#button-outline {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  width: 220;
+  height: 60;
+  border-radius: 0px 0px 0px 20px;
+  background-color: #FFFFFF;
+}
+#instructions {
+  font-weight: bold;
+  position: absolute;
+  text-align: center;
+  line-height: 60px;
+  top: 0;
+  right: 40%;
+  z-index: 5;
+  width: 20%;
+  height: 60;
+  background-color: #FFFFFF;
+  border-radius: 0px 0px 20px 20px;
+}
+</style>
+{% load leaflet_tags %}
+<html>
+  <head>
+   {% leaflet_js plugins="forms" %}
+   {% leaflet_css plugins="forms" %}
+  </head>
+  <body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <div id='button-outline'></div>
+        <div id='instructions'>Draw the total area you wish to canvass.</div>
+        <input type="submit" value="Complete" id='submit_area'/>
+    </form>
+  </body>
+</html>

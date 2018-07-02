@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    {% block title %}<title>HVDSA TurfCutter</title>{% endblock %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add additional CSS in static file -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/turfcutter/css/styles.css' %}">
+  </head>
+
+  <body>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <style>body { padding-top: 70px; }</style>
+
+
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          {% if user.is_authenticated %}
+          <a class="navbar-brand" href="#">HVDSA TurfCutter</a>
+          {% endif %}
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'campaigns' %}">Campaigns</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+             {% if user.is_authenticated %}
+              <li><p class="navbar-text">User: {{ user.get_username }}</p></li>
+              <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+            {% else %}
+              <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+            {% endif %}
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+      {% if user.is_authenticated %}
+      {% block content %}{% endblock %}
+      {% endif %}
+      {% block login_content %}{% endblock %}
+  </body>
+</html>

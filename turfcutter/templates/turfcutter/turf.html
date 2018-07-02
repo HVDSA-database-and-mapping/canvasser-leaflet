@@ -1,0 +1,111 @@
+<style>
+.leaflet-container {  /* all maps */
+  width:  100%;
+  height: 100%;
+  z-index: 1;
+}
+label[for="id_geom"] { display:none; }
+#submit-sectors {
+  position: absolute;
+  top: 12;
+  right: 12;
+  z-index: 10;
+  width: 200;
+  height: 40;
+  background-color: #36e24a;
+  font-size: 16;
+  border-radius: 12px;
+}
+#button-outline {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  width: 220;
+  height: 110;
+  border-radius: 0px 0px 0px 20px;
+  background-color: #FFFFFF;
+}
+#complete_button {
+  position: absolute;
+  z-index: 10;
+  top: 62;
+  right: 12;
+  width: 200;
+  height: 40;
+  background-color: #36e24a;
+  font-size: 16;
+  border-radius: 12px;
+}
+#instructions {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 33%;
+  width: 34%;
+  height: 60px;
+  background-color: #FFFFFF;
+  font-size: 14;
+  font-weight: bold;
+  border-radius: 0px 0px 20px 20px;
+  text-align: center;
+  line-height: 60px;
+}
+</style>
+{% load leaflet_tags %}
+<html>
+  <head>
+   <title>HVDSA Canvasser Turf Layout</title>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   {% leaflet_js plugins="forms" %}
+   {% leaflet_css plugins="forms" %}
+   <script type="text/javascript">
+    window.addEventListener("map:init", function (event) {
+      var map = event.detail.map;
+      var style = {
+        "stroke": true,
+        "weight": 2,
+        "color": "#666666",
+        "fillColor": "#ff0000",
+        "opacity": 0.8,
+        "fillOpacity": 0.8,
+      };
+      var area_style = {
+        "color": "#666666",
+        "fillColor": "#ff0000",
+        "opacity": 0.8,
+        "fillOpacity": 0.3
+      };
+      var turf_style = {
+        "fillColor": "#ff9966",
+        "color": "#ff9966"
+      };
+      var polygon = L.geoJSON({% autoescape off %}{{ canvass_area.geom.json }}{% endautoescape %}, area_style).addTo(map);
+      // zoom the map to the polygon
+      map.fitBounds(polygon.getBounds());
+      {% for parcel in parcels %}
+      var parcel = L.geoJSON({% autoescape off %}{{ parcel.geom.json }}{% endautoescape %}, style).addTo(map);
+      {% endfor %}
+      {% for turf in turfs %}
+      var sector = L.geoJSON({% autoescape off %}{{ turf.geom.json }}{% endautoescape %}, turf_style).addTo(map);
+      sector.bindTooltip("{{ turf.name }}", {permanent: true, direction:"center"}).openTooltip();
+      {% endfor %}
+    });
+  </script>
+  </head>
+  <body>
+<script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <div id='button-outline'></div>
+        <div id='instructions'>Draw a turf. Then <i>Assign Turf</i>. When you're done, <i>Finish Canvass</i>.</div>
+        <input id='submit-sectors' type="submit" value="Assign Turf"/>
+    </form>
+    <a id='complete_button' class="btn btn-primary" href="{% url 'canvass-details' canvass_id=canvass_id %}">Finish Canvass</a>
+  </body>
+</html>

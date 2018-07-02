@@ -1,0 +1,25 @@
+{% extends "turfcutter/base.html" %}
+
+{% block content %}
+<div class='panel panel-primary'>
+    <div class='panel-heading'>
+        <h1 class='panel-title'>{{ canvass.name }} Turf List</h1>
+    </div>
+    <div class='panel-body'>
+
+        {% if turf_list %}
+        <ul>
+
+            {% for turf in turf_list %}
+            <li>
+                <a href="/turfcutter{{ turf.get_absolute_url }}">Turf {{ turf.name }}</a>
+            </li>
+            {% endfor %}
+
+        </ul>
+        {% else %}
+        <p>No canvasses have been created.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

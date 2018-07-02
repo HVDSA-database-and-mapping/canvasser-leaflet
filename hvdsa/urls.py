@@ -19,6 +19,8 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('canvasser/', include('canvasser.urls')),
-    path('', RedirectView.as_view(url='canvasser/', permanent=False), name='index')
+    path('turfcutter/', include('turfcutter.urls')),
+    path('', RedirectView.as_view(url='turfcutter/', permanent=False),
+        name='index'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

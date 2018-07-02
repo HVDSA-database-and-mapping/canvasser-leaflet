@@ -1,4 +1,5 @@
 *.swp
-canvasser/__pycache__/
+turfcutter/__pycache__/
 hvdsa/__pycache__/
 hvdsasecrets.py
+notes/

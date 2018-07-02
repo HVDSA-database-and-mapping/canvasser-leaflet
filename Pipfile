@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django-floppyforms = "*"
+django-geojson = "*"
+django-leaflet = "*"
+psycopg2-binary = "*"
+pytz = "*"
+six = "*"
+Django = "*"
+reportlab = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"

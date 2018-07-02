@@ -1,0 +1,22 @@
+{% extends "turfcutter/base.html" %}
+
+{% block content %}
+<div class='panel panel-primary'>
+  <div class='panel-heading'>
+    <h1 class='panel-title'>{{ canvass.name }} Turf {{ turf.name }}</h1>
+  </div>
+  <div class='panel-body'>
+    {% if parcel_list %}
+    <ul>
+      {% for parcel in parcel_list %}
+      <li>
+          <a href="/turfcutter/interaction/{{ turf.id }}/{{parcel.id}}/">{{ parcel.prop_street_num }} {{parcel.prop_street}}</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No parcels in this turf.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
