@@ -30,9 +30,7 @@ COPY Pipfile /usr/local/canvasser-leaflet/
 COPY Pipfile.lock /usr/local/canvasser-leaflet/
 RUN cd /usr/local/canvasser-leaflet && pipenv install --system
 
-
-# RUN pip3 install "Django==2.0.4" "django-floppyforms==1.7.0" "django-geojson==2.11.0" "django-leaflet==0.23.0" "psycopg2-binary==2.7.4" "pytz==2018.4" "six==1.11.0"
-# RUN pip3 install "geos"
+RUN apk add postgresql-client
 
 # uwsgi stuff
 COPY uwsgi.ini /etc
@@ -40,8 +38,16 @@ COPY uwsgi-foreground.sh /
 
 RUN mkdir -p /usr/local/canvasser-leaflet/hvdsa
 RUN mkdir -p /usr/local/canvasser-leaflet/turfcutter
+RUN mkdir -p /usr/local/canvasser-leaflet/templates
+RUN mkdir -p /usr/local/canvasser-leaflet/static
 COPY hvdsa /usr/local/canvasser-leaflet/hvdsa
 COPY turfcutter /usr/local/canvasser-leaflet/turfcutter
+COPY templates /usr/local/canvasser-leaflet/templates
+COPY static /usr/local/canvasser-leaflet/static
 
 COPY manage.py /usr/local/canvasser-leaflet/
 COPY hvdsasecrets.py /usr/local/canvasser-leaflet/
+
+WORKDIR /usr/local/canvasser-leaflet
+
+CMD ["/usr/local/bin/python", "manage.py", "runserver", "0:8000"]
