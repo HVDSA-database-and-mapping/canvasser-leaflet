@@ -15,7 +15,8 @@ In order to make this app into a docker container, take these steps (most of thi
 5. Import the database backup into your postgis database:
 
     docker run -it --rm --link turfcutter-postgis:postgres --volume /path/to/hvdsa_db.bkp:/usr/share/hvdsa_db.bkp postgres:10-alpine pg_restore -h postgres -U postgres -d postgres /usr/share/hvdsa_db.bkp
-    # (you'll have to enter your some-cool-password when prompted)
+    
+    (you'll have to enter your some-cool-password when prompted)
 
 6. Set the search path.  You will only need to do this once per database-import.
 
