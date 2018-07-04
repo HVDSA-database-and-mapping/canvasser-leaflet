@@ -43,11 +43,12 @@ RUN mkdir -p /usr/local/canvasser-leaflet/static
 COPY hvdsa /usr/local/canvasser-leaflet/hvdsa
 COPY turfcutter /usr/local/canvasser-leaflet/turfcutter
 COPY templates /usr/local/canvasser-leaflet/templates
-COPY static /usr/local/canvasser-leaflet/static
 
 COPY manage.py /usr/local/canvasser-leaflet/
 COPY hvdsasecrets.py /usr/local/canvasser-leaflet/
 
+COPY runserver.sh /usr/local/canvasser-leaflet/
+
 WORKDIR /usr/local/canvasser-leaflet
 
-CMD ["/usr/local/bin/python", "manage.py", "runserver", "0:8000"]
+CMD /usr/local/canvasser-leaflet/runserver.sh
