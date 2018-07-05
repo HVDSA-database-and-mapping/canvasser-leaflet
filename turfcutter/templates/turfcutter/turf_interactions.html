@@ -1,0 +1,38 @@
+{% extends "turfcutter/base.html" %}
+
+<!- https://www.djangosnippets.org/snippets/1442/ ->
+{% block content %}
+<div class='panel panel-primary'>
+    <div class='panel-heading'>
+	<h1 class='panel-title'>{{ turf.canvass.name }} Turf {{ turf.name }}</h1>
+    </div>
+    <div class='panel-body'>
+        {{ formset.management_form }}
+	{{ formset.non_form_errors.as_ul }}
+	<table id="formset" class="form">
+	    {% for form in formset.forms %}
+	    {% if forloop.first %}
+	    <thead><tr>
+		    {% for field in form.visible_fields %}
+		    <th>{{ field.label|capfirst }}</th>
+		    {% endfor %}
+		</tr></thead>
+		{% endif %}
+		<tr class='row1'>
+		    {% for field in form.visible_fields %}
+		    <td>
+			{% if forloop.first %}
+			{% for hidden in form.hidden_fields %}
+			{{ hidden }}
+			{% endfor %}
+			{% endif %}
+			{{ field.errors.as_ul }}
+			{{ field }}
+		    </td>
+		    {% endfor %}
+		</tr>
+		{% endfor %}
+	</table>
+    </div>
+</div>
+{% endblock %}

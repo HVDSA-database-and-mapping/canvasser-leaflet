@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, formset_factory
 from leaflet.forms.widgets import LeafletWidget
 from .models import *
 
@@ -57,3 +57,14 @@ class InteractionForm(ModelForm):
         widgets = {'at_home': HorizontalRadioSelect, 'accepted_material': HorizontalRadioSelect,
                 'campaign_response': HorizontalRadioSelect, 'dsa_response': HorizontalRadioSelect}
         labels= {'at_home': 'Home', 'accepted_material': 'Accept', 'campaign_response': 'Campaign', 'dsa_response': 'DSA'}
+
+class InlineInteractionForm(ModelForm):
+    class Meta:
+        model = Interaction
+        fields = ('at_home', 'accepted_material', 'campaign_response',
+            'dsa_response', 'notes')
+        widgets = {'at_home': HorizontalRadioSelect, 'accepted_material': HorizontalRadioSelect,
+                'campaign_response': HorizontalRadioSelect, 'dsa_response': HorizontalRadioSelect,
+                'notes': forms.Textarea(attrs={'rows': 1})}
+        labels= {'at_home': 'Home', 'accepted_material': 'Accept', 'campaign_response': 'Campaign', 'dsa_response': 'DSA'}
+

@@ -20,6 +20,7 @@ urlpatterns = [
     path('turf-selection/<int:canvass_id>/', turf_select, name='turf-selection'),
     path('turf-canvass/<int:turf_id>/', turf_canvass, name='turf-canvass'),
     path('interaction/<int:turf_id>/<int:parcel_id>/', new_interaction, name='interaction'),
+    path('turf-interactions/<int:turf_id>/', turf_interactions, name='turf-interactions'),
     re_path(r'^data/(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+).geojson$',
         UntrimmedTiledGeoJSONLayerView.as_view(model=Parcel),
         name='data_tiled'),

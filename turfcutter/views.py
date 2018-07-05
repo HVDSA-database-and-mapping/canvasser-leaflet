@@ -5,6 +5,7 @@ from django.views import generic
 from .models import *
 from djgeojson.views import TiledGeoJSONLayerView
 from django.contrib.gis.db.models.functions import AsGeoJSON, Transform
+from django.forms import modelformset_factory
 
 import datetime
 from reportlab.pdfgen import canvas
@@ -270,3 +271,15 @@ def new_interaction(request, turf_id, parcel_id):
         form = InteractionForm()
     return render(request, 'turfcutter/interaction.html',
             {'form': form, 'parcel': this_parcel})
+
+def turf_interactions(request, turf_id):
+    this_turf = get_object_or_404(Turf, id=turf_id)
+    InteractionFormSet = modelformset_factory(Interaction, form=InlineInteractionForm)
+    if request.method == 'POST':
+        this_formset = InteractionFormSet(queryset=Interaction.objects.filter(turf=turf_id), data=request.POST)
+        if this_formset.is_valid():
+            this_formset.save()
+    else:
+        this_formset = InteractionFormSet(queryset=Interaction.objects.filter(turf=turf_id))
+    return render(request, 'turfcutter/turf_interactions.html', {'formset': this_formset, 'turf': this_turf})
+
