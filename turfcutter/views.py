@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import generic
@@ -14,6 +15,8 @@ from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+
+import os
 
 from .forms import *
 
@@ -154,7 +157,7 @@ def canvass_pdf(request, canvass_id):
     response['Content-Disposition'] = \
         'attachment; filename="canvass-%d.pdf"' % canvass_id
 
-    font_file = '/home/rwturner/django-apps/hvdsa/turfcutter/static/Symbola_hint.ttf'
+    font_file = os.path.join(settings.BASE_DIR, 'turfcutter/static/Symbola_hint.ttf')
     symbola_font = TTFont('Symbola', font_file)
     pdfmetrics.registerFont(symbola_font)
 

@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+try:
+  import hvdsasecrets
+except ModuleNotFoundError as exc:
+  raise ModuleNotFoundError("Secrets file not found. Copy hvdsasecrets.example.py to hvdsasecrets.py and change the values.")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '05f31bgo)^ymwvy@ztxoim)ndp2p-*b8al__a579coma33i4w('
+SECRET_KEY = hvdsasecrets.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -76,13 +80,7 @@ WSGI_APPLICATION = 'hvdsa.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'hvdsa',
-        'USER': 'rwturner',
-    }
-}
+DATABASES = hvdsasecrets.DATABASES
 
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (42.24, -83.61),

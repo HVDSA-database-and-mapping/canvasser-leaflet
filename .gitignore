@@ -1,2 +1,5 @@
 *.swp
+turfcutter/__pycache__/
+hvdsa/__pycache__/
+hvdsasecrets.py
 notes/
